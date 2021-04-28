@@ -1,17 +1,18 @@
 
 import QtQuick 2.8
+import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
 import "components"
 
 FocusScope {
   FontLoader { id: convectionui; source: "assets/fonts/convectionui.ttf" }
 
-  function vpx(value) {
-    return value
+  function vpx(size) {
+    return Math.round(size * (Screen.height / 720))
   }
 
   Image {
-    source: "assets/images/wallpapers/0001.jpg"
+    source: "assets/images/wallpapers/0002.jpg"
     fillMode: Image.PreserveAspectCrop
     anchors.fill: parent
   }
@@ -25,8 +26,8 @@ FocusScope {
   Component {
     id: cardDelegate
     Item {
-      width: height * 0.75
-      height: 480
+      width: vpx(234)
+      height: vpx(320)
       scale: PathView.iconScale
       z: -x
       anchors.top: parent.top
@@ -38,9 +39,14 @@ FocusScope {
         source: modelData.assets.poster
         visible: modelData.assets.poster
         asynchronous: true
+        mipmap: true
         layer.enabled: true
         layer.effect: OpacityMask {
           maskSource: mask
+        }
+        sourceSize: {
+          width: vpx(234)
+          height: vpx(320)
         }
       }
 
@@ -56,7 +62,7 @@ FocusScope {
 
         layer.enabled: true
         layer.effect: OpacityMask {
-            maskSource: mask
+          maskSource: mask
         }
       }
 
@@ -120,12 +126,11 @@ FocusScope {
       id: sectionName
       anchors.left: parent.left
       horizontalAlignment: Text.AlignLeft
-      // scale: PathView.itemScale
       opacity: PathView.itemOpacity
       z: index
       text: modelData.name
       color: '#FFF'
-      font.pointSize: 44
+      font.pointSize: vpx(30)
       font.family: convectionui.name
       transform:[
         Translate {
@@ -139,14 +144,17 @@ FocusScope {
       ]
       layer.enabled: true
       layer.effect: DropShadow {
-        verticalOffset: 1
-        horizontalOffset: 1
-        color: "#000"
-        radius: 2
-        samples: 3
+        verticalOffset: vpx(1)
+        horizontalOffset: vpx(1)
+        color: "#88000000"
+        radius: 1
+        samples: vpx(1)
       }
     }
   }
+
+  property var currentPlatform: api.collections.get(sectionsList.currentIndex)
+  property var currentGame: currentPlatform.games.get(cardsList.currentIndex)
 
   Keys.onUpPressed: sectionsList.decrementCurrentIndex()
   Keys.onDownPressed: sectionsList.incrementCurrentIndex()
@@ -154,7 +162,7 @@ FocusScope {
   Keys.onRightPressed: cardsList.incrementCurrentIndex()
   Keys.onPressed: {
     if (!event.isAutoRepeat && api.keys.isAccept(event)) {
-      api.collections.get(sectionsList.currentIndex).games.get(cardsList.currentIndex).launch();
+      currentGame.launch();
     }
   }
   focus: true
@@ -164,9 +172,9 @@ FocusScope {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
-    anchors.leftMargin: vpx(118)
-    anchors.topMargin: vpx(100)
-    height: vpx(242)
+    anchors.leftMargin: vpx(92)
+    anchors.topMargin: vpx(74)
+    height: vpx(149)
     model: api.collections
     delegate: sectionDelegate
     pathItemCount: 5
@@ -184,10 +192,11 @@ FocusScope {
   PathView {
     id: cardsList
     anchors.top: sectionsList.bottom
-    anchors.left: parent.left
+    anchors.left: sectionsList.left
     anchors.right: parent.right
-    anchors.leftMargin: vpx(300)
-    anchors.topMargin: vpx(40)
+    anchors.leftMargin: vpx(234) / 2 + vpx(3) // extract to var
+    anchors.topMargin: vpx(24)
+    height: vpx(320)
     model: api.collections.get(sectionsList.currentIndex).games
     delegate: cardDelegate
     pathItemCount: 9
@@ -196,46 +205,58 @@ FocusScope {
 
     path: Path {
       startX: 0; startY: 0
-      // PathQuad { x: 50; y: 80; controlX: 0; controlY: 80 }
-      // PathPercent { value: 0.1 } 10% no path quad anterior
-      // PathLine { x: 150; y: 80 }
-      // PathPercent { value: 0.75 }
-      // PathQuad { x: 180; y: 0; controlX: 200; controlY: 80 }
-      // PathPercent { value: 1 }
       PathAttribute { name: "iconScale"; value: 1 }
 
-      PathLine { x: 311; y: 0 }
+      PathLine { x: vpx(207); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 1  }
-      PathAttribute { name: "iconScale"; value: 0.83 }
+      PathAttribute { name: "iconScale"; value: 0.86 }
 
-      PathLine { x: 571; y: 0 }
+      PathLine { x: vpx(381); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 2  }
-      PathAttribute { name: "iconScale"; value: 0.73 }
+      PathAttribute { name: "iconScale"; value: 0.75 }
 
-      PathLine { x: 801; y: 0 }
+      PathLine { x: vpx(534); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 3  }
-      PathAttribute { name: "iconScale"; value: 0.65 }
+      PathAttribute { name: "iconScale"; value: 0.67 }
 
-      PathLine { x: 1000; y: 0 }
+      PathLine { x: vpx(667); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 4  }
       PathAttribute { name: "iconScale"; value: 0.6 }
 
-      PathLine { x: 1181; y: 0 }
+      PathLine { x: vpx(787); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 5  }
-      PathAttribute { name: "iconScale"; value: 0.54 }
+      PathAttribute { name: "iconScale"; value: 0.55 }
 
-      PathLine { x: 1344; y: 0 }
+      PathLine { x: vpx(896); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 6  }
-      PathAttribute { name: "iconScale"; value: 0.49 }
+      PathAttribute { name: "iconScale"; value: 0.50 }
 
-      PathLine { x: 1490; y: 0 }
+      PathLine { x: vpx(993); y: 0 }
       PathPercent { value: 100 / 9 / 100 * 7  }
-      PathAttribute { name: "iconScale"; value: 0.45 }
+      PathAttribute { name: "iconScale"; value: 0.47 }
 
-      PathLine { x: 1623; y: 0 }
+      PathLine { x: vpx(1082); y: 0 }
       PathPercent { value: 1  }
-      PathAttribute { name: "iconScale"; value: 0.42 }
+      PathAttribute { name: "iconScale"; value: 0.43 }
+    }
+  }
 
+  Text {
+    text: `${cardsList.currentIndex + 1} of ${cardsList.count}  |  ${currentGame.title}`
+    anchors.top: cardsList.bottom
+    anchors.topMargin: vpx(9)
+    anchors.left: parent.left
+    anchors.leftMargin: vpx(95)
+    font.family: convectionui.name
+    font.pointSize: vpx(14)
+    layer.enabled: true
+    color: "#616161"
+    layer.effect: DropShadow {
+      verticalOffset: vpx(1)
+      horizontalOffset: vpx(1)
+      color: "#55FFFFFF"
+      radius: 1
+      samples: vpx(1)
     }
   }
 
@@ -245,15 +266,15 @@ FocusScope {
     text: "Select"
     anchors.bottom: parent.bottom
     anchors.left: parent.left
-    anchors.leftMargin: vpx(118)
-    anchors.bottomMargin: vpx(82)
+    anchors.leftMargin: vpx(95)
+    anchors.bottomMargin: vpx(55)
   }
 
   ButtonPrompt {
     button: "y"
     text: "Game details"
     anchors.left: selectPrompt.right
-    anchors.leftMargin: vpx(30)
+    anchors.leftMargin: vpx(21)
     anchors.verticalCenter: selectPrompt.verticalCenter
   }
 }
