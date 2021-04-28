@@ -69,7 +69,7 @@ FocusScope {
       Rectangle {
         id: mask
         anchors.fill: parent
-        radius: 8
+        radius: vpx(8)
         visible: false
       }
 
