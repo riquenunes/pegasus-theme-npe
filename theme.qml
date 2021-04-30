@@ -156,8 +156,8 @@ FocusScope {
   property var currentPlatform: api.collections.get(sectionsList.currentIndex)
   property var currentGame: currentPlatform.games.get(cardsList.currentIndex)
 
-  Keys.onUpPressed: sectionsList.decrementCurrentIndex()
-  Keys.onDownPressed: sectionsList.incrementCurrentIndex()
+  Keys.onUpPressed: sectionsList.incrementCurrentIndex()
+  Keys.onDownPressed: sectionsList.decrementCurrentIndex()
   Keys.onLeftPressed: cardsList.decrementCurrentIndex()
   Keys.onRightPressed: cardsList.incrementCurrentIndex()
   Keys.onPressed: {
