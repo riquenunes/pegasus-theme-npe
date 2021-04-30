@@ -7,6 +7,9 @@ import "components"
 FocusScope {
   FontLoader { id: convectionui; source: "assets/fonts/convectionui.ttf" }
 
+  property int artworkWidth: vpx(234)
+  property int artworkHeight: vpx(320)
+
   function vpx(size) {
     return Math.round(size * (Screen.height / 720))
   }
@@ -26,9 +29,10 @@ FocusScope {
   Component {
     id: cardDelegate
     Item {
-      width: vpx(234)
-      height: vpx(320)
+      width: artworkWidth
+      height: artworkHeight
       scale: PathView.iconScale
+      opacity: PathView.iconOpacity
       z: -x
       anchors.top: parent.top
 
@@ -45,8 +49,8 @@ FocusScope {
           maskSource: mask
         }
         sourceSize: {
-          width: vpx(234)
-          height: vpx(320)
+          width: width
+          height: height
         }
       }
 
@@ -189,55 +193,73 @@ FocusScope {
     }
   }
 
+  property var startingItemX: artworkWidth / 2;
+
   PathView {
     id: cardsList
     anchors.top: sectionsList.bottom
     anchors.left: sectionsList.left
     anchors.right: parent.right
-    anchors.leftMargin: vpx(234) / 2 + vpx(3) // extract to var
+    anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
     height: vpx(320)
     model: api.collections.get(sectionsList.currentIndex).games
     delegate: cardDelegate
-    pathItemCount: 9
-
+    pathItemCount: 10
+    preferredHighlightBegin: 0.1
+    preferredHighlightEnd: 0.1
     movementDirection: PathView.Positive
 
     path: Path {
+
       startX: 0; startY: 0
+      PathAttribute { name: "iconScale"; value: 1.2 }
+      PathAttribute { name: "iconOpacity"; value: 0 }
+
+      PathLine { x: startingItemX; y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 1  }
       PathAttribute { name: "iconScale"; value: 1 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(207); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 1  }
+      PathLine { x: startingItemX + vpx(207); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 2  }
       PathAttribute { name: "iconScale"; value: 0.86 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(381); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 2  }
+      PathLine { x: startingItemX + vpx(381); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 3  }
       PathAttribute { name: "iconScale"; value: 0.75 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(534); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 3  }
+      PathLine { x: startingItemX + vpx(534); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 4  }
       PathAttribute { name: "iconScale"; value: 0.67 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(667); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 4  }
+      PathLine { x: startingItemX + vpx(667); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 5  }
       PathAttribute { name: "iconScale"; value: 0.6 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(787); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 5  }
+      PathLine { x: startingItemX + vpx(787); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 6  }
       PathAttribute { name: "iconScale"; value: 0.55 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(896); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 6  }
+      PathLine { x: startingItemX + vpx(896); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 7  }
       PathAttribute { name: "iconScale"; value: 0.50 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(993); y: 0 }
-      PathPercent { value: 100 / 9 / 100 * 7  }
+      PathLine { x: startingItemX + vpx(993); y: 0 }
+      PathPercent { value: 100 / 10 / 100 * 8  }
       PathAttribute { name: "iconScale"; value: 0.47 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
 
-      PathLine { x: vpx(1082); y: 0 }
+      PathLine { x: startingItemX + vpx(1082); y: 0 }
       PathPercent { value: 1  }
       PathAttribute { name: "iconScale"; value: 0.43 }
+      PathAttribute { name: "iconOpacity"; value: 1 }
     }
   }
 
