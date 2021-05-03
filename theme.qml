@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.0
 import "components"
 
 FocusScope {
+  id: root
   FontLoader { id: convectionui; source: "assets/fonts/convectionui.ttf" }
 
   property int artworkWidth: vpx(234)
@@ -29,12 +30,17 @@ FocusScope {
   Component {
     id: cardDelegate
     Item {
+      id: artwork
       width: artworkWidth
       height: artworkHeight
-      scale: PathView.iconScale
-      opacity: PathView.iconOpacity
+      scale: PathView.itemScale
+      transformOrigin: Item.Left
+      opacity: 1
       z: -x
       anchors.top: parent.top
+      transform: Translate {
+        y: artwork.PathView.itemOffsetY
+      }
 
       Image {
         id: poster
@@ -73,7 +79,7 @@ FocusScope {
       Rectangle {
         id: mask
         anchors.fill: parent
-        radius: vpx(8)
+        radius: vpx(7)
         visible: false
       }
 
@@ -160,8 +166,26 @@ FocusScope {
   property var currentPlatform: api.collections.get(sectionsList.currentIndex)
   property var currentGame: currentPlatform.games.get(cardsList.currentIndex)
 
-  Keys.onUpPressed: sectionsList.incrementCurrentIndex()
-  Keys.onDownPressed: sectionsList.decrementCurrentIndex()
+  Keys.onUpPressed: {
+    sectionsList.incrementCurrentIndex()
+    generatePathPoints({
+      parent: cardsList,
+      itemWidth: artworkWidth,
+      itemHeight: artworkHeight,
+      itemsCount: cardsList.pathItemCount
+    })
+  }
+
+  Keys.onDownPressed: {
+    sectionsList.decrementCurrentIndex()
+    generatePathPoints({
+      parent: cardsList,
+      itemWidth: artworkWidth,
+      itemHeight: artworkHeight,
+      itemsCount: cardsList.pathItemCount
+    })
+  }
+
   Keys.onLeftPressed: cardsList.decrementCurrentIndex()
   Keys.onRightPressed: cardsList.incrementCurrentIndex()
   Keys.onPressed: {
@@ -195,7 +219,58 @@ FocusScope {
 
   property var startingItemX: artworkWidth / 2;
 
+  function generatePathPoints({
+    parent,
+    itemWidth,
+    itemHeight,
+    itemsCount,
+  }) {
+    const getScale = (index) => [
+      1, .85938, .7531, .666, .600, .54688, .503, .4656, .42813, .403125, .375, .353125, .334375, .32, .32
+    ][index];
+
+    const getOffsetY = (index) => vpx([
+      0, -4, -7, -9, -11, -13, -14, -15, -16, -17, -17, -18, -19, -19, -19
+    ][index]);
+
+    const getX = (index) => {
+      const distances = [0, -2, -27, -39, -48, -52, -54, -55, -54, -55, -52, -52, -50, -50,-50];
+      const startingItemX = itemWidth / 2;
+
+      if (index === 0) return startingItemX;
+
+      const currentWidth = itemWidth * getScale(index);
+      const previousWidth = itemWidth * getScale(index - 1);
+      const previousX = getX(index - 1);
+
+      return previousWidth + previousX + vpx(distances[index]);
+      return previousWidth + previousX - ((previousWidth - currentWidth) / 2) + vpx(distances[index]);
+    }
+
+    const createQtQuickObject = definition => Qt.createQmlObject(`
+      import QtQuick 2.8;
+      ${definition}
+    `, root);
+
+    const path = createQtQuickObject('Path { startX: 0; startY: 0 }');
+
+    path.pathElements = [...Array(itemsCount + 1).keys()]
+      .reduce((acc, i) => ([
+        ...acc,
+        `PathLine { x: ${getX(i)}; y: 0 }`,
+        `PathAttribute { name: "itemScale"; value: ${getScale(i)} }`,
+        `PathAttribute { name: "itemOffsetY"; value: ${getOffsetY(i)} }`,
+        `PathPercent { value: ${1 / itemsCount * i}  }`
+      ]), [
+        `PathAttribute { name: "itemScale"; value: 1 }`
+      ]).map(createQtQuickObject);
+
+    parent.path = path;
+    parent.visible = true;
+  }
+
   PathView {
+    visible: false
     id: cardsList
     anchors.top: sectionsList.bottom
     anchors.left: sectionsList.left
@@ -203,63 +278,20 @@ FocusScope {
     anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
     height: vpx(320)
-    model: api.collections.get(sectionsList.currentIndex).games
+    model: currentPlatform.games
     delegate: cardDelegate
-    pathItemCount: 10
-    preferredHighlightBegin: 0.1
-    preferredHighlightEnd: 0.1
+    pathItemCount: currentPlatform.games.count < 14
+      ? currentPlatform.games.count
+      : 14
     movementDirection: PathView.Positive
 
-    path: Path {
-
-      startX: 0; startY: 0
-      PathAttribute { name: "iconScale"; value: 1.2 }
-      PathAttribute { name: "iconOpacity"; value: 0 }
-
-      PathLine { x: startingItemX; y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 1  }
-      PathAttribute { name: "iconScale"; value: 1 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(207); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 2  }
-      PathAttribute { name: "iconScale"; value: 0.86 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(381); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 3  }
-      PathAttribute { name: "iconScale"; value: 0.75 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(534); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 4  }
-      PathAttribute { name: "iconScale"; value: 0.67 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(667); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 5  }
-      PathAttribute { name: "iconScale"; value: 0.6 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(787); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 6  }
-      PathAttribute { name: "iconScale"; value: 0.55 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(896); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 7  }
-      PathAttribute { name: "iconScale"; value: 0.50 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(993); y: 0 }
-      PathPercent { value: 100 / 10 / 100 * 8  }
-      PathAttribute { name: "iconScale"; value: 0.47 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
-
-      PathLine { x: startingItemX + vpx(1082); y: 0 }
-      PathPercent { value: 1  }
-      PathAttribute { name: "iconScale"; value: 0.43 }
-      PathAttribute { name: "iconOpacity"; value: 1 }
+    Component.onCompleted: {
+      generatePathPoints({
+        parent: cardsList,
+        itemWidth: artworkWidth,
+        itemHeight: artworkHeight,
+        itemsCount: cardsList.pathItemCount
+      })
     }
   }
 
