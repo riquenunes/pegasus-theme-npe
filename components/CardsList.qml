@@ -48,9 +48,15 @@ Item {
         `PathLine { x: ${getX(i)}; y: 0 }`,
         `PathAttribute { name: "itemScale"; value: ${getScale(i)} }`,
         `PathAttribute { name: "itemOffsetY"; value: ${getOffsetY(i)} }`,
+        `PathAttribute { name: "previousItemScale"; value: ${getScale(i == 0 ? 0 : i - 1)} }`,
+        `PathAttribute { name: "itemX"; value: ${getX(i)} }`,
+        `PathAttribute { name: "previousItemX"; value: ${getX(i == 0 ? 0 : i - 1)} }`,
         `PathPercent { value: ${1 / itemsCount * i}  }`
       ]), [
-        `PathAttribute { name: "itemScale"; value: 1 }`
+        `PathAttribute { name: "itemScale"; value: 1 }`,
+        `PathAttribute { name: "previousItemScale"; value: ${getScale(0)} }`,
+        `PathAttribute { name: "itemX"; value: ${getX(0)} }`,
+        `PathAttribute { name: "previousItemX"; value: ${getX(0)} }`,
       ]).map(createQtQuickObject);
 
     cardsList.path = path;
@@ -64,11 +70,41 @@ Item {
       height: cardHeight
       scale: PathView.itemScale
       transformOrigin: Item.Left
-      opacity: 1
+      opacity: 0
       z: -x
       anchors.top: parent.top
       transform: Translate {
         y: card.PathView.itemOffsetY
+
+        SequentialAnimation on x  {
+          PauseAnimation { duration: 50 * index }
+          NumberAnimation {
+            from: -(card.PathView.itemX - card.PathView.previousItemX)
+            to: 0
+            duration: 300
+            easing.type: Easing.OutCubic
+          }
+        }
+      }
+
+      SequentialAnimation on opacity  {
+        PauseAnimation { duration: 50 * index }
+        NumberAnimation {
+          from: 0
+          to: 1
+          duration: 300
+          easing.type: Easing.OutCubic
+        }
+      }
+
+      SequentialAnimation on scale  {
+        PauseAnimation { duration: 50 * index }
+        NumberAnimation {
+          from: card.PathView.previousItemScale
+          to: card.PathView.itemScale
+          duration: 300
+          easing.type: Easing.OutCubic
+        }
       }
 
       Item {
@@ -80,6 +116,7 @@ Item {
         Loader {
           id: cardLoader
           property var modelData: parent.modelData
+          property var isCurrentItem: parent.parent.PathView.isCurrentItem
           width: parent.width
           height: parent.height
           sourceComponent: delegate
@@ -98,6 +135,14 @@ Item {
         }
       }
 
+
+      // Text {
+      //   text: card.PathView.itemX
+      //   font.family: convectionui.name
+      //   font.pointSize: vpx(14)
+      //   font.letterSpacing: vpx(1)
+      //   color: '#FFF'
+      // }
 
       Rectangle {
         id: reflection
