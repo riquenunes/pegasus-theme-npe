@@ -5,7 +5,7 @@ import "../components"
 
 Item {
   FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
-
+  focus: true
   Image {
     source: "../assets/images/wallpapers/0002.jpg"
     fillMode: Image.PreserveAspectCrop
@@ -71,8 +71,7 @@ Item {
       if (api.keys.isAccept(event)) {
         currentGame.launch();
       } else if (api.keys.isDetails(event)) {
-        api.memory.set(memoryKeys.game, currentGame);
-        api.memory.set(memoryKeys.page, pages.gameDetails);
+        navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
       }
     }
   }
@@ -156,7 +155,7 @@ Item {
   }
 
   ButtonPrompt {
-    button: "y"
+    button: "x"
     text: "Game details"
     anchors.left: selectPrompt.right
     anchors.leftMargin: vpx(21)

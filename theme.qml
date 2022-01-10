@@ -11,29 +11,42 @@ FocusScope {
     return Math.round(size * (Screen.height / 720))
   }
 
+  function navigate(page, params) {
+    api.memory.set(memoryKeys.page, page);
+
+    if (params) {
+      const key = Object.keys(params)[0];
+      const value = params[key];
+
+      api.memory.set(key, value);
+    }
+
+    pageLoader.source = `pages/${page}`;
+  }
+
   property var memoryKeys: {
     'page': 'page',
-    'game': 'game'
+    'currentGame': 'current-game',
+    'videoPath': 'video-path'
   }
 
   property var pages: {
-    'library': 'library',
-    'gameDetails': 'game-details'
+    'library': 'LibraryPage.qml',
+    'gameDetails': 'DetailsPage.qml',
+    'videoPlayer': 'VideoPlayerPage.qml'
   }
 
-  LibraryPage {
-    visible: api.memory.get(memoryKeys.page) === pages.library
-    focus: visible
-    anchors.fill: parent
-  }
-
-  DetailsPage {
-    visible: api.memory.get(memoryKeys.page) === pages.gameDetails
-    focus: visible
+  Loader {
+    id: pageLoader
+    focus: true
     anchors.fill: parent
   }
 
   Component.onCompleted: {
-    if (!memory.has(memoryKeys.page)) api.memory.set(memoryKeys.page, pages.library)
+    if (!api.memory.has(memoryKeys.page)) {
+      navigate(pages.library);
+    } else {
+      navigate(api.memory.get(memoryKeys.page));
+    }
   }
 }
