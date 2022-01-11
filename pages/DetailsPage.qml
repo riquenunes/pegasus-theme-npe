@@ -47,7 +47,7 @@ Item {
 
       ActionList {
         id: quickActions
-        focus: isCurrentItem
+        focus: true
         model: ListModel {
           ListElement {
             label: () => "Play Now"
@@ -86,6 +86,7 @@ Item {
       ActionList {
         id: imageActions
         anchors.top: imagesHeader.bottom
+        focus: true
         model: ListModel {
           ListElement {
             label: () => "Play Now"
@@ -242,22 +243,18 @@ Item {
     model: ListModel {
       ListElement {
         type: "quick-actions"
-        focus: () => quickActions.forceActiveFocus()
         component: () => quickActionsCard
       }
       ListElement {
         type: "images"
-        focus: () => imageActions.forceActiveFocus()
         component: () => imagesCard
       }
       ListElement {
         type: "details"
-        focus: () => quickActions.forceActiveFocus()
         component: () => detailsCard
       }
       ListElement {
         type: "description"
-        focus: () => quickActions.forceActiveFocus()
         component: () => descriptionCard
       }
     }
@@ -265,7 +262,6 @@ Item {
     anchors.left: parent.left
     anchors.leftMargin: vpx(67)
     delegate: Rectangle {
-      focus: isCurrentItem
       width: parent.width
       height: parent.height
 
@@ -275,13 +271,21 @@ Item {
       }
 
       Loader {
-        focus: true
+        id: loader
+        focus: isCurrentItem
         anchors.fill: parent
         anchors.leftMargin: vpx(25)
         anchors.topMargin: vpx(25)
         anchors.rightMargin: vpx(25)
         anchors.bottomMargin: vpx(25)
         sourceComponent: modelData.component()
+      }
+
+      Connections {
+        target: cardsList
+        function onCurrentIndexChanged() {
+          isCurrentItem && loader.forceActiveFocus();
+        }
       }
     }
   }
