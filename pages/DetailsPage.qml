@@ -189,7 +189,7 @@ Item {
             StyledText {
               text: currentGame.collections.get(0).name
               font.weight: Font.Black
-              opacity: 0.5
+              color: '#80FFFFFF'
               layer.enabled: false
             }
           }
@@ -203,7 +203,7 @@ Item {
             StyledText {
               text: currentGame.developer
               font.weight: Font.Black
-              opacity: 0.5
+              color: '#80FFFFFF'
               layer.enabled: false
             }
           }
@@ -218,7 +218,7 @@ Item {
             StyledText {
               text: currentGame.publisher
               font.weight: Font.Black
-              opacity: 0.5
+              color: '#80FFFFFF'
               layer.enabled: false
             }
           }
@@ -260,7 +260,7 @@ Item {
           wrapMode: Text.WordWrap
           text: currentGame.description || currentGame.summary
           textFormat: Text.StyledText
-          opacity: 0.5
+          color: '#80FFFFFF'
           layer.enabled: false
         }
       }
