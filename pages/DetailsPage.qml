@@ -29,12 +29,10 @@ Item {
     id: quickActionsCard
 
     Item {
-      Text {
+      StyledText {
         id: gameTitle
         text: currentGame.title
-        color: "#FFF"
         font.pointSize: vpx(25)
-        font.family: convectionui.name
       }
 
       Rating {
@@ -74,12 +72,9 @@ Item {
     id: imagesCard
 
     Item {
-      Text {
+      StyledText {
         id: imagesHeader
         text: "Images"
-        color: "#FFF"
-        font.pointSize: vpx(18)
-        font.family: convectionui.name
         font.weight: Font.Black
       }
 
@@ -130,11 +125,8 @@ Item {
               || currentGame.assets.background
           }
 
-          Text {
+          StyledText {
             text: label()
-            color: "#FFF"
-            font.pointSize: vpx(14)
-            font.family: convectionui.name
             font.weight: Font.Black
             anchors.left: parent.left
             anchors.right: parent.right
@@ -164,12 +156,9 @@ Item {
     id: detailsCard
 
     Item {
-      Text {
+      StyledText {
         id: detailsHeader
         text: "Details"
-        color: "#FFF"
-        font.pointSize: vpx(18)
-        font.family: convectionui.name
         font.weight: Font.Black
       }
 
@@ -194,60 +183,45 @@ Item {
           spacing: vpx(12)
 
           Column {
-            Text {
+            StyledText {
               text: "Platform"
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
             }
 
-            Text {
+            StyledText {
               text: currentGame.collections.get(0).name
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
               opacity: 0.5
+              layer.enabled: false
             }
           }
 
           Column {
-            Text {
+            StyledText {
               text: "Developer"
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
             }
 
-            Text {
+            StyledText {
               text: currentGame.developer
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
               opacity: 0.5
+              layer.enabled: false
             }
           }
 
           Column {
-            Text {
+            StyledText {
               text: "Publisher"
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
               anchors.topMargin: vpx(25)
             }
 
-            Text {
+            StyledText {
               text: currentGame.publisher
-              color: "#FFF"
-              font.pointSize: vpx(18)
-              font.family: convectionui.name
               font.weight: Font.Black
               opacity: 0.5
+              layer.enabled: false
             }
           }
         }
@@ -260,29 +234,34 @@ Item {
     id: descriptionCard
 
     Item {
-      Text {
+      StyledText {
         id: aboutHeader
-        text: "About This Game"
-        color: "#FFF"
-        font.pointSize: vpx(18)
-        font.family: convectionui.name
+        text: "Description"
         font.weight: Font.Black
       }
 
-      Text {
-        color: "#FFF"
-        font.pointSize: vpx(18)
-        font.family: convectionui.name
-        font.weight: Font.ExtraLight
+      Flickable {
+        focus: true
         anchors.topMargin: vpx(25)
         anchors.top: aboutHeader.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        wrapMode: Text.WordWrap
-        text: currentGame.description || currentGame.summary
-        textFormat: Text.StyledText
-        opacity: 0.5
+        contentHeight: descriptionText.height
+        clip: true
+        Keys.onUpPressed:   flick(0,  800)
+        Keys.onDownPressed: flick(0, -800)
+
+        StyledText {
+          id: descriptionText
+          anchors.left: parent.left
+          anchors.right: parent.right
+          wrapMode: Text.WordWrap
+          text: currentGame.description || currentGame.summary
+          textFormat: Text.StyledText
+          opacity: 0.5
+          layer.enabled: false
+        }
       }
     }
   }
@@ -316,9 +295,15 @@ Item {
       width: parent.width
       height: parent.height
 
-      gradient: Gradient {
-        GradientStop { position: 0.0; color: "#465052" }
-        GradientStop { position: 1.0; color: "#1a1e1d" }
+      LinearGradient {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(parent.width, parent.height)
+        gradient: Gradient {
+          GradientStop { position: 0; color: "#50616e" }
+          GradientStop { position: .6; color: "#283743" }
+          GradientStop { position: 1; color: "#29333d" }
+        }
       }
 
       Loader {
