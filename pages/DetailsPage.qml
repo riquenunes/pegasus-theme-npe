@@ -90,11 +90,10 @@ Item {
               pages.imageViewer,
               {
                 [memoryKeys.imagePaths]: [
-                  currentGame.assets.screenshot,
-                  currentGame.assets.titlescreen,
-                  currentGame.assets.banner,
-                  currentGame.assets.background
-                ].filter(i => i)
+                  ...currentGame.assets.screenshotList,
+                  ...currentGame.assets.titlescreenList,
+                  ...currentGame.assets.bannerList
+                ]
               }
             )
             canExecute: () => true
@@ -122,7 +121,6 @@ Item {
             source: currentGame.assets.screenshot
               || currentGame.assets.titlescreen
               || currentGame.assets.banner
-              || currentGame.assets.background
           }
 
           StyledText {
