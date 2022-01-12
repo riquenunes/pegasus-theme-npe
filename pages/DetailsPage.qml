@@ -241,14 +241,17 @@ Item {
       }
 
       Flickable {
+        id: descriptionFlickable
         focus: true
         anchors.topMargin: vpx(25)
+        anchors.bottomMargin: vpx(25)
         anchors.top: aboutHeader.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         contentHeight: descriptionText.height
         clip: true
+        boundsBehavior: Flickable.StopAtBounds
         Keys.onUpPressed:   flick(0,  800)
         Keys.onDownPressed: flick(0, -800)
 
@@ -261,6 +264,25 @@ Item {
           textFormat: Text.StyledText
           opacity: 0.5
           layer.enabled: false
+        }
+      }
+
+      Row {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
+        Image {
+          source: descriptionFlickable.verticalVelocity < 0
+            ? "../assets/images/icons/up-focus.png"
+            : "../assets/images/icons/up-default.png"
+          opacity: descriptionFlickable.atYBeginning ? 0 : 1
+        }
+
+        Image {
+          source: descriptionFlickable.verticalVelocity > 0
+            ? "../assets/images/icons/down-focus.png"
+            : "../assets/images/icons/down-default.png"
+          opacity: descriptionFlickable.atYEnd ? 0 : 1
         }
       }
     }
