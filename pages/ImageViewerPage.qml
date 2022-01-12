@@ -30,7 +30,7 @@ Item {
   }
 
   function previousImage() {
-    currentIndex = currentIndex == 0 ? imagePaths.length : currentIndex - 1;
+    currentIndex = (currentIndex == 0 ? imagePaths.length : currentIndex) - 1;
     timer.restart();
   }
 
