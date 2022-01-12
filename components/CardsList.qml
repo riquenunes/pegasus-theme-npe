@@ -110,6 +110,7 @@ Item {
       Item {
         id: content
         property var modelData: model
+        property var itemIndex: index
         width: parent.width
         height: parent.height
 
@@ -117,6 +118,7 @@ Item {
           id: cardLoader
           property var modelData: parent.modelData
           property var isCurrentItem: parent.parent.PathView.isCurrentItem
+          property var index: parent.itemIndex
           width: parent.width
           height: parent.height
           sourceComponent: delegate

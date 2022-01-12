@@ -339,8 +339,13 @@ Item {
 
       Connections {
         target: cardsList
-        function onCurrentIndexChanged() {
-          isCurrentItem && loader.forceActiveFocus();
+
+        onCurrentIndexChanged: () => {
+          if (isCurrentItem) loader.forceActiveFocus();
+        }
+
+        Component.onCompleted: () => {
+          if (index === 0) loader.forceActiveFocus();
         }
       }
     }
