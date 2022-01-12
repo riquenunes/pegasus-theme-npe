@@ -86,22 +86,73 @@ Item {
       ActionList {
         id: imageActions
         anchors.top: imagesHeader.bottom
+        anchors.topMargin: vpx(25)
         focus: true
         model: ListModel {
           ListElement {
-            label: () => "Play Now"
-            action: () => currentGame.launch()
+            label: () => "View Full Screen"
+            action: () => navigate(
+              pages.imageViewer,
+              {
+                [memoryKeys.imagePaths]: [
+                  currentGame.assets.screenshot,
+                  currentGame.assets.titlescreen,
+                  currentGame.assets.banner,
+                  currentGame.assets.background
+                ].filter(i => i)
+              }
+            )
             canExecute: () => true
           }
-          ListElement {
-            label: () => "Watch Preview"
-            action: () => navigate(pages.videoPlayer, { [memoryKeys.videoPath]: currentGame.assets.video })
-            canExecute: () => !!currentGame.assets.video
+        }
+        delegate: Column {
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.top: parent.top
+          spacing: vpx(16)
+
+          Item {
+            height: 1
+            anchors.left: parent.left
+            anchors.right: parent.right
           }
-          ListElement {
-            label: () => !currentGame.favorite ? "Pin to Home" : "Remove Pin"
-            action: () => currentGame.favorite = !currentGame.favorite
-            canExecute: () => true
+
+          Image {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            fillMode: Image.PreserveAspectFit
+
+            anchors.leftMargin: vpx(16)
+            anchors.rightMargin: vpx(16)
+            source: currentGame.assets.screenshot
+              || currentGame.assets.titlescreen
+              || currentGame.assets.banner
+              || currentGame.assets.background
+          }
+
+          Text {
+            text: label()
+            color: "#FFF"
+            font.pointSize: vpx(14)
+            font.family: convectionui.name
+            font.weight: Font.Black
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: vpx(16)
+            anchors.rightMargin: vpx(16)
+            anchors.bottomMargin: vpx(16)
+          }
+
+          Item {
+            height: 1
+            anchors.left: parent.left
+            anchors.right: parent.right
+          }
+
+          Keys.onPressed: {
+            if (api.keys.isAccept(event) && canExecute() && !event.isAutoRepeat) {
+              action();
+            }
           }
         }
       }
@@ -291,11 +342,9 @@ Item {
   }
 
   Keys.onPressed: {
-    if (!event.isAutoRepeat) {
-      if (api.keys.isCancel(event)) {
-        navigate(pages.library);
-        event.accepted = true;
-      }
+    if (!event.isAutoRepeat && api.keys.isCancel(event)) {
+      navigate(pages.library);
+      event.accepted = true;
     }
   }
 

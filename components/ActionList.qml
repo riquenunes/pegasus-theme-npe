@@ -17,13 +17,24 @@ ListView {
     x: listView.currentItem.x - vpx(2.5)
 
     Rectangle {
+      visible: !listView.activeFocus
+      anchors.fill: parent
+      color: null
+      border.color: '#FFF'
+      border.width: vpx(2)
+      opacity: .2
+      radius: bg.radius
+    }
+
+    Rectangle {
       id: bg
+      visible: listView.activeFocus
       gradient: Gradient {
         GradientStop { position: 0; color: "#bdd3a1" }
         GradientStop { position: .5; color: "#5d9809" }
         GradientStop { position: 1; color: "#6d9a17" }
       }
-      radius: 5
+      radius: vpx(5)
       anchors.fill: parent
       clip: true
 
@@ -73,15 +84,14 @@ ListView {
       //   }
       // }
 
-    }
-    DropShadow {
-      anchors.fill: bg
-      horizontalOffset: 0
-      verticalOffset: 0
-      radius: 8.0
-      samples: 17
-      color: "#80000000"
-      source: bg
+      layer.enabled: true
+      layer.effect: DropShadow {
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+      }
     }
 
   }

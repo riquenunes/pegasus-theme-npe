@@ -27,13 +27,15 @@ FocusScope {
   property var memoryKeys: {
     'page': 'page',
     'currentGame': 'current-game',
-    'videoPath': 'video-path'
+    'videoPath': 'video-path',
+    'imagePaths': 'image-paths'
   }
 
   property var pages: {
     'library': 'LibraryPage.qml',
     'gameDetails': 'DetailsPage.qml',
-    'videoPlayer': 'VideoPlayerPage.qml'
+    'videoPlayer': 'VideoPlayerPage.qml',
+    'imageViewer': 'ImageViewerPage.qml'
   }
 
   Loader {
