@@ -11,6 +11,7 @@ Item {
   property alias currentIndex: cardsList.currentIndex
   property var incrementCurrentIndex: cardsList.incrementCurrentIndex
   property var decrementCurrentIndex: cardsList.decrementCurrentIndex
+  property bool animate: true
   property var generatePathPoints: () => {
     const getScale = (index) => [
       1, .85938, .7531, .666, .600, .54688, .503, .4656, .42813, .403125, .375, .353125, .334375, .32, .32
@@ -59,6 +60,7 @@ Item {
         `PathAttribute { name: "previousItemX"; value: ${getX(0)} }`,
       ]).map(createQtQuickObject);
 
+    animate = true;
     cardsList.path = path;
   }
 
@@ -202,6 +204,15 @@ Item {
       : 14
     movementDirection: PathView.Positive
     delegate: cardDelegate
+
+    property int previousIndex: 0
+
+    onCurrentItemChanged: {
+      if (currentIndex > previousIndex) panelRightSound.play();
+      if (currentIndex < previousIndex) panelLeftSound.play();
+
+      previousIndex = currentIndex;
+    }
 
     Component.onCompleted: generatePathPoints()
   }

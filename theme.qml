@@ -2,6 +2,7 @@
 import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
+import QtMultimedia 5.15
 import "pages"
 
 FocusScope {
@@ -36,6 +37,43 @@ FocusScope {
     'gameDetails': 'DetailsPage.qml',
     'videoPlayer': 'VideoPlayerPage.qml',
     'imageViewer': 'ImageViewerPage.qml'
+  }
+
+  SoundEffect {
+    id: channelUpSound
+    source: 'assets/audio/channel-up.wav'
+  }
+
+  SoundEffect {
+    id: channelDownSound
+    source: 'assets/audio/channel-down.wav'
+  }
+
+  SoundEffect {
+    id: panelLeftSound
+    source: 'assets/audio/panel-left.wav'
+    volume: .1
+  }
+
+  SoundEffect {
+    id: panelRightSound
+    source: 'assets/audio/panel-right.wav'
+    volume: .1
+  }
+
+  SoundEffect {
+    id: selectSound
+    source: 'assets/audio/select.wav'
+  }
+
+  SoundEffect {
+    id: focusSound
+    source: 'assets/audio/focus.wav'
+  }
+
+  SoundEffect {
+    id: backSound
+    source: 'assets/audio/back.wav'
   }
 
   Loader {

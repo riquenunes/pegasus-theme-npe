@@ -55,17 +55,29 @@ Item {
   property var currentGame: currentPlatform.games.get(gamesList.currentIndex)
 
   Keys.onUpPressed: {
-    platformsList.incrementCurrentIndex()
-    gamesList.generatePathPoints()
+    if (!event.isAutoRepeat) {
+      platformsList.incrementCurrentIndex()
+      gamesList.generatePathPoints()
+      channelUpSound.play()
+    }
   }
 
   Keys.onDownPressed: {
-    platformsList.decrementCurrentIndex()
-    gamesList.generatePathPoints()
+    if (!event.isAutoRepeat) {
+      platformsList.decrementCurrentIndex()
+      gamesList.generatePathPoints()
+      channelDownSound.play()
+    }
   }
 
-  Keys.onLeftPressed: gamesList.decrementCurrentIndex()
-  Keys.onRightPressed: gamesList.incrementCurrentIndex()
+  Keys.onLeftPressed: {
+    if (!event.isAutoRepeat) gamesList.decrementCurrentIndex()
+  }
+
+  Keys.onRightPressed: {
+    if (!event.isAutoRepeat) gamesList.incrementCurrentIndex()
+  }
+
   Keys.onPressed: {
     if (!event.isAutoRepeat) {
       if (api.keys.isAccept(event)) {
@@ -73,6 +85,8 @@ Item {
       } else if (api.keys.isDetails(event)) {
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
       }
+
+      selectSound.play();
     }
   }
 

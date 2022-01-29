@@ -10,6 +10,14 @@ ListView {
   anchors.left: parent.left
   anchors.right: parent.right
 
+  property int previousIndex: 0
+
+  onCurrentItemChanged: {
+    if (currentIndex !== previousIndex) focusSound.play();
+
+    previousIndex = currentIndex;
+  }
+
   highlight: Item {
     height: listView.currentItem.height + vpx(5)
     width: listView.currentItem.width + vpx(5)
@@ -130,10 +138,13 @@ ListView {
     }
 
     Keys.onPressed: {
-      if (!event.isAutoRepeat) {
-        if (api.keys.isAccept(event) && canExecute()) {
-          action();
-        }
+      if (
+        !event.isAutoRepeat &&
+        api.keys.isAccept(event) &&
+        canExecute()
+      ) {
+        selectSound.play();
+        action();
       }
     }
   }
