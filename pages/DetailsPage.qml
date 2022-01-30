@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
+import QtQuick.Layouts 1.1
 
 import "../components"
 
@@ -33,6 +34,9 @@ Item {
         id: gameTitle
         text: currentGame.title
         font.pointSize: vpx(25)
+        elide: Text.ElideRight
+        anchors.right: parent.right
+        anchors.left: parent.left
       }
 
       Rating {
@@ -160,7 +164,7 @@ Item {
         font.weight: Font.Black
       }
 
-      Row {
+      RowLayout {
         spacing: vpx(25)
         anchors.topMargin: vpx(25)
         anchors.top: detailsHeader.bottom
@@ -169,46 +173,63 @@ Item {
         anchors.right: parent.right
 
         Image {
+          Layout.maximumWidth: vpx(156)
+          anchors.top: parent.top
           width: vpx(156)
           source: currentGame.assets.poster || currentGame.assets.boxFront || currentGame.assets.logo
           asynchronous: true
           mipmap: true
           fillMode: Image.PreserveAspectFit
-
+          verticalAlignment: Image.AlignTop
         }
 
-        Column {
+        ColumnLayout {
+          Layout.fillWidth: true
+
+          anchors.top: parent.top
           spacing: vpx(12)
 
-          Column {
+          ColumnLayout {
+            Layout.fillWidth: true
+
             StyledText {
               text: "Platform"
               font.weight: Font.Black
             }
 
             StyledText {
+              Layout.fillWidth: true
+
               text: currentGame.collections.get(0).name
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
+              elide: Text.ElideRight
             }
           }
 
-          Column {
+          ColumnLayout {
+            Layout.fillWidth: true
+
             StyledText {
               text: "Developer"
               font.weight: Font.Black
             }
 
             StyledText {
+              Layout.fillWidth: true
+
               text: currentGame.developer
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
+              elide: Text.ElideRight
             }
           }
 
-          Column {
+          ColumnLayout {
+            Layout.fillWidth: true
+
             StyledText {
               text: "Publisher"
               font.weight: Font.Black
@@ -216,10 +237,13 @@ Item {
             }
 
             StyledText {
+              Layout.fillWidth: true
+
               text: currentGame.publisher
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
+              elide: Text.ElideRight
             }
           }
         }
