@@ -12,6 +12,36 @@ FocusScope {
     return Math.round(size * (Screen.height / 720))
   }
 
+  property var panelStyle: {
+    'cover': 'cover',
+    'generic': 'generic'
+  }
+
+  function getChannelsPanelStyle(channelItems) {
+    if (channelItems.toVarArray().some(g => g.assets.poster)) {
+      return panelStyle.cover;
+    }
+
+    return panelStyle.generic;
+  }
+
+  function getChannelsPanelDimensions(channelItems) {
+    const style = getChannelsPanelStyle(channelItems);
+    const map = {
+      [panelStyle.cover]: {
+        width: vpx(234),
+        height: vpx(320)
+      },
+      [panelStyle.generic]: {
+        width: vpx(420),
+        height: vpx(320)
+      }
+    }
+
+    return map[style];
+  }
+
+
   function navigate(page, params) {
     api.memory.set(memoryKeys.page, page);
 
@@ -42,11 +72,13 @@ FocusScope {
   SoundEffect {
     id: channelUpSound
     source: 'assets/audio/channel-up.wav'
+    volume: .5
   }
 
   SoundEffect {
     id: channelDownSound
     source: 'assets/audio/channel-down.wav'
+    volume: .5
   }
 
   SoundEffect {
@@ -64,16 +96,19 @@ FocusScope {
   SoundEffect {
     id: selectSound
     source: 'assets/audio/select.wav'
+    volume: .5
   }
 
   SoundEffect {
     id: focusSound
     source: 'assets/audio/focus.wav'
+    volume: .5
   }
 
   SoundEffect {
     id: backSound
     source: 'assets/audio/back.wav'
+    volume: .5
   }
 
   Loader {
