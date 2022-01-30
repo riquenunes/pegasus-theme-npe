@@ -7,12 +7,13 @@ Item {
   FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   focus: true
   Image {
-    source: "../assets/images/wallpapers/0002.jpg"
+    source: "../assets/images/wallpapers/2.png"
     fillMode: Image.PreserveAspectCrop
     anchors.fill: parent
   }
 
   Image {
+    id: stage
     source: "../assets/images/stages/0003.png"
     fillMode: Image.PreserveAspectCrop
     anchors.fill: parent
@@ -82,11 +83,11 @@ Item {
     if (!event.isAutoRepeat) {
       if (api.keys.isAccept(event)) {
         currentGame.launch();
+        selectSound.play();
       } else if (api.keys.isDetails(event)) {
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
+        selectSound.play();
       }
-
-      selectSound.play();
     }
   }
 
@@ -139,21 +140,19 @@ Item {
     }
   }
 
-  Text {
+  StyledText {
     text: `${gamesList.currentIndex + 1} of ${currentPlatform.games.count}  |  ${currentGame.title}`
     anchors.top: gamesList.bottom
     anchors.topMargin: vpx(9)
     anchors.left: parent.left
-    anchors.leftMargin: vpx(95)
-    font.family: convectionui.name
-    font.pointSize: vpx(14)
-    layer.enabled: true
+    anchors.leftMargin: vpx(96)
+    font.pointSize: vpx(15)
     color: "#616161"
     layer.effect: DropShadow {
       verticalOffset: vpx(1)
       horizontalOffset: vpx(1)
       color: "#55FFFFFF"
-      radius: 1
+      radius: vpx(2)
       samples: vpx(1)
     }
   }
@@ -164,8 +163,8 @@ Item {
     text: "Select"
     anchors.bottom: parent.bottom
     anchors.left: parent.left
-    anchors.leftMargin: vpx(95)
-    anchors.bottomMargin: vpx(55)
+    anchors.leftMargin: vpx(96)
+    anchors.bottomMargin: vpx(54)
   }
 
   ButtonPrompt {

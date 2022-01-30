@@ -13,6 +13,6 @@ Text {
     horizontalOffset: 1
     color: "#80000000"
     radius: 2
-    samples: 3
+    samples: 1
   }
 }

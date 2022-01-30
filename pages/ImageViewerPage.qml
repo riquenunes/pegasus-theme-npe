@@ -95,8 +95,8 @@ Item {
     text: isRunning ? "Pause" : "Resume"
     anchors.bottom: parent.bottom
     anchors.left: parent.left
-    anchors.leftMargin: vpx(95)
-    anchors.bottomMargin: vpx(55)
+    anchors.leftMargin: vpx(96)
+    anchors.bottomMargin: vpx(54)
   }
 
   ButtonPrompt {

@@ -4,7 +4,6 @@ import QtGraphicalEffects 1.0
 Item {
   property string button
   property string text
-  FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   width: icon.width + label.contentWidth + label.anchors.leftMargin
   height: icon.height
 
@@ -15,24 +14,13 @@ Item {
     height: vpx(32)
   }
 
-  Text {
+  StyledText {
     id: label
     anchors.left: icon.right
     anchors.verticalCenter: icon.verticalCenter
     anchors.leftMargin: vpx(4)
-    color: '#FFF'
     text: parent.text
-    font.family: convectionui.name
     font.pointSize: vpx(14)
-    font.letterSpacing: vpx(1)
-    layer.enabled: true
-    layer.effect: DropShadow {
-      verticalOffset: vpx(1)
-      horizontalOffset: vpx(1)
-      color: "#88000000"
-      radius: 1
-      samples: vpx(1)
-    }
     transform: Translate {
       y: vpx(1)
     }
