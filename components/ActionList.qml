@@ -56,9 +56,9 @@ ListView {
       id: bg
       visible: listView.activeFocus
       gradient: Gradient {
-        GradientStop { position: 0; color: "#bdd3a1" }
-        GradientStop { position: .5; color: "#5d9809" }
-        GradientStop { position: 1; color: "#6d9a17" }
+        GradientStop { position: 0; color: '#bdd3a1' }
+        GradientStop { position: .5; color: '#5d9809' }
+        GradientStop { position: 1; color: '#6d9a17' }
       }
       radius: vpx(5)
       anchors.fill: parent
@@ -71,8 +71,8 @@ ListView {
         height: parent.height
         // opacity: .8
         gradient: Gradient {
-          GradientStop { position: 0.0; color: "#66ffffff" }
-          GradientStop { position: 0.5; color: "transparent" }
+          GradientStop { position: 0.0; color: '#66ffffff' }
+          GradientStop { position: 0.5; color: 'transparent' }
         }
       }
 
@@ -97,15 +97,15 @@ ListView {
       //   gradient: Gradient {
       //     GradientStop {
       //       position: .3
-      //       color: "transparent"
+      //       color: 'transparent'
       //     }
       //     GradientStop {
       //       position: .5
-      //       color: "white"
+      //       color: 'white'
       //     }
       //     GradientStop {
       //       position: .7
-      //       color: "transparent"
+      //       color: 'transparent'
       //     }
       //   }
       // }
@@ -116,7 +116,7 @@ ListView {
         verticalOffset: 0
         radius: 8.0
         samples: 17
-        color: "#80000000"
+        color: '#80000000'
       }
     }
 
@@ -137,7 +137,7 @@ ListView {
     }
 
     Rectangle {
-      color: "#FFF"
+      color: '#FFF'
       opacity: parent.ListView.isCurrentItem ? 0 : .2
       height: vpx(1)
       width: parent.width

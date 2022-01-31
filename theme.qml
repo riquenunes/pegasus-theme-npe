@@ -3,8 +3,8 @@ import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.15
-import "pages"
-import "components"
+import 'pages'
+import 'components'
 
 FocusScope {
   id: root

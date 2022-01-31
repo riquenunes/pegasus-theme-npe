@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtMultimedia 5.15
 
-import "../components"
+import '../components'
 
 Item {
   property var imagePaths: api.memory.get(memoryKeys.imagePaths)
@@ -67,7 +67,7 @@ Item {
     }
 
     Rectangle {
-      color: "#000"
+      color: '#000'
       opacity: .8
       width: pageText.width + vpx(128)
       height: pageText.height + vpx(32)
@@ -89,7 +89,7 @@ Item {
   Component.onCompleted: () => {
     setAvailableActions({
       [actionKeys.bottom]: {
-        label: isRunning ? "Pause" : "Resume",
+        label: isRunning ? 'Pause' : 'Resume',
         visible: true,
       },
       [actionKeys.right]: {
@@ -102,7 +102,7 @@ Item {
   onIsRunningChanged: {
     setAvailableActions({
       [actionKeys.bottom]: {
-        label: isRunning ? "Pause" : "Resume",
+        label: isRunning ? 'Pause' : 'Resume',
         visible: true,
       },
       [actionKeys.right]: {

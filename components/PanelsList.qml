@@ -47,17 +47,17 @@ Item {
       .reduce((acc, i) => ([
         ...acc,
         `PathLine { x: ${getX(i)}; y: 0 }`,
-        `PathAttribute { name: "itemScale"; value: ${getScale(i)} }`,
-        `PathAttribute { name: "itemOffsetY"; value: ${getOffsetY(i)} }`,
-        `PathAttribute { name: "previousItemScale"; value: ${getScale(i == 0 ? 0 : i - 1)} }`,
-        `PathAttribute { name: "itemX"; value: ${getX(i)} }`,
-        `PathAttribute { name: "previousItemX"; value: ${getX(i == 0 ? 0 : i - 1)} }`,
+        `PathAttribute { name: 'itemScale'; value: ${getScale(i)} }`,
+        `PathAttribute { name: 'itemOffsetY'; value: ${getOffsetY(i)} }`,
+        `PathAttribute { name: 'previousItemScale'; value: ${getScale(i == 0 ? 0 : i - 1)} }`,
+        `PathAttribute { name: 'itemX'; value: ${getX(i)} }`,
+        `PathAttribute { name: 'previousItemX'; value: ${getX(i == 0 ? 0 : i - 1)} }`,
         `PathPercent { value: ${1 / itemsCount * i}  }`
       ]), [
-        `PathAttribute { name: "itemScale"; value: 1 }`,
-        `PathAttribute { name: "previousItemScale"; value: ${getScale(0)} }`,
-        `PathAttribute { name: "itemX"; value: ${getX(0)} }`,
-        `PathAttribute { name: "previousItemX"; value: ${getX(0)} }`,
+        `PathAttribute { name: 'itemScale'; value: 1 }`,
+        `PathAttribute { name: 'previousItemScale'; value: ${getScale(0)} }`,
+        `PathAttribute { name: 'itemX'; value: ${getX(0)} }`,
+        `PathAttribute { name: 'previousItemX'; value: ${getX(0)} }`,
       ]).map(createQtQuickObject);
 
     animate = true;
@@ -191,7 +191,7 @@ Item {
         anchors.left: content.right
         height: parent.height
         width: height * 0.09
-        source: "../assets/images/misc/panel-shadow.png"
+        source: '../assets/images/misc/panel-shadow.png'
       }
     }
   }

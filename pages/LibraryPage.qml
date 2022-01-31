@@ -1,19 +1,19 @@
 import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
-import "../components"
+import '../components'
 
 Item {
   focus: true
   Image {
-    source: "../assets/images/wallpapers/2.png"
+    source: '../assets/images/wallpapers/2.png'
     fillMode: Image.PreserveAspectCrop
     anchors.fill: parent
   }
 
   Image {
     id: stage
-    source: "../assets/images/stages/0003.png"
+    source: '../assets/images/stages/0003.png'
     fillMode: Image.PreserveAspectCrop
     anchors.fill: parent
   }
@@ -94,11 +94,11 @@ Item {
 
     path: Path {
       startX: 0; startY: platformsList.height - 21
-      PathAttribute { name: "itemScale"; value: 1 }
-      PathAttribute { name: "itemOpacity"; value: 1 }
+      PathAttribute { name: 'itemScale'; value: 1 }
+      PathAttribute { name: 'itemOpacity'; value: 1 }
       PathLine { x: 0; y: 0 }
-      PathAttribute { name: "itemScale"; value: 0.39 }
-      PathAttribute { name: "itemOpacity"; value: 0.2 }
+      PathAttribute { name: 'itemScale'; value: 0.39 }
+      PathAttribute { name: 'itemOpacity'; value: 0.2 }
     }
   }
 
@@ -150,8 +150,8 @@ Item {
           start: Qt.point(0, 0)
           end: Qt.point(0, parent.height)
           gradient: Gradient {
-            GradientStop { position: .64; color: "#00000000" }
-            GradientStop { position: 1; color: "#FF000000" }
+            GradientStop { position: .64; color: '#00000000' }
+            GradientStop { position: 1; color: '#FF000000' }
           }
         }
 
@@ -215,11 +215,11 @@ Item {
     anchors.left: parent.left
     anchors.leftMargin: vpx(96)
     font.pointSize: vpx(15)
-    color: "#616161"
+    color: '#616161'
     layer.effect: DropShadow {
       verticalOffset: vpx(1)
       horizontalOffset: vpx(1)
-      color: "#55FFFFFF"
+      color: '#55FFFFFF'
       radius: vpx(2)
       samples: vpx(1)
     }

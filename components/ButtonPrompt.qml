@@ -29,31 +29,31 @@ Item {
   }
 
   states: [
-    State { name: "Visible" },
-    State { name: "Invisible" }
+    State { name: 'Visible' },
+    State { name: 'Invisible' }
   ]
 
   transitions: [
     Transition {
-      to: "Visible"
+      to: 'Visible'
       SequentialAnimation {
         NumberAnimation {
           target: prompt
-          property: "width"
+          property: 'width'
           to: icon.width + label.contentWidth + label.anchors.leftMargin
           duration: 100
         }
         ParallelAnimation {
           NumberAnimation {
             target: icon
-            property: "scale"
+            property: 'scale'
             to: 1
             duration: 300
             easing.type: Easing.OutBounce
           }
           NumberAnimation {
             target: label
-            property: "opacity"
+            property: 'opacity'
             to: 1
             duration: 300
           }
@@ -61,25 +61,25 @@ Item {
       }
     },
     Transition {
-      to: "Invisible"
+      to: 'Invisible'
       SequentialAnimation {
         ParallelAnimation {
           NumberAnimation {
             target: icon
-            property: "scale"
+            property: 'scale'
             to: 0
             duration: 300
           }
           NumberAnimation {
             target: label
-            property: "opacity"
+            property: 'opacity'
             to: 0
             duration: 300
           }
         }
         NumberAnimation {
           target: prompt
-          property: "width"
+          property: 'width'
           to: 0
           duration: 100
         }

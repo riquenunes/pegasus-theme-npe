@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
 
-import "../components"
+import '../components'
 
 Item {
   property var currentGame: api.memory.get(memoryKeys.currentGame)
@@ -51,17 +51,17 @@ Item {
         focus: true
         model: ListModel {
           ListElement {
-            label: () => "Play Now"
+            label: () => 'Play Now'
             action: () => currentGame.launch()
             canExecute: () => true
           }
           ListElement {
-            label: () => "Watch Preview"
+            label: () => 'Watch Preview'
             action: () => navigate(pages.videoPlayer, { [memoryKeys.videoPath]: currentGame.assets.video })
             canExecute: () => !!currentGame.assets.video
           }
           ListElement {
-            label: () => !currentGame.favorite ? "Pin to Home" : "Remove Pin"
+            label: () => !currentGame.favorite ? 'Pin to Home' : 'Remove Pin'
             action: () => currentGame.favorite = !currentGame.favorite
             canExecute: () => true
           }
@@ -77,7 +77,7 @@ Item {
     Item {
       StyledText {
         id: imagesHeader
-        text: "Images"
+        text: 'Images'
         font.weight: Font.Black
       }
 
@@ -88,7 +88,7 @@ Item {
         focus: true
         model: ListModel {
           ListElement {
-            label: () => "View Full Screen"
+            label: () => 'View Full Screen'
             action: () => navigate(
               pages.imageViewer,
               {
@@ -159,7 +159,7 @@ Item {
     Item {
       StyledText {
         id: detailsHeader
-        text: "Details"
+        text: 'Details'
         font.weight: Font.Black
       }
 
@@ -192,7 +192,7 @@ Item {
             Layout.fillWidth: true
 
             StyledText {
-              text: "Platform"
+              text: 'Platform'
               font.weight: Font.Black
             }
 
@@ -211,7 +211,7 @@ Item {
             Layout.fillWidth: true
 
             StyledText {
-              text: "Developer"
+              text: 'Developer'
               font.weight: Font.Black
             }
 
@@ -230,7 +230,7 @@ Item {
             Layout.fillWidth: true
 
             StyledText {
-              text: "Publisher"
+              text: 'Publisher'
               font.weight: Font.Black
               anchors.topMargin: vpx(25)
             }
@@ -257,7 +257,7 @@ Item {
     Item {
       StyledText {
         id: aboutHeader
-        text: "Description"
+        text: 'Description'
         font.weight: Font.Black
       }
 
@@ -294,15 +294,15 @@ Item {
 
         Image {
           source: descriptionFlickable.verticalVelocity < 0
-            ? "../assets/images/icons/up-focus.png"
-            : "../assets/images/icons/up-default.png"
+            ? '../assets/images/icons/up-focus.png'
+            : '../assets/images/icons/up-default.png'
           opacity: descriptionFlickable.atYBeginning ? 0 : 1
         }
 
         Image {
           source: descriptionFlickable.verticalVelocity > 0
-            ? "../assets/images/icons/down-focus.png"
-            : "../assets/images/icons/down-default.png"
+            ? '../assets/images/icons/down-focus.png'
+            : '../assets/images/icons/down-default.png'
           opacity: descriptionFlickable.atYEnd ? 0 : 1
         }
       }
@@ -315,19 +315,19 @@ Item {
     panelHeight: vpx(480)
     model: ListModel {
       ListElement {
-        type: "quick-actions"
+        type: 'quick-actions'
         component: () => quickActionsPanel
       }
       ListElement {
-        type: "images"
+        type: 'images'
         component: () => imagesPanel
       }
       ListElement {
-        type: "details"
+        type: 'details'
         component: () => detailsPanel
       }
       ListElement {
-        type: "description"
+        type: 'description'
         component: () => descriptionPanel
       }
     }
@@ -343,9 +343,9 @@ Item {
         start: Qt.point(0, 0)
         end: Qt.point(parent.width, parent.height)
         gradient: Gradient {
-          GradientStop { position: 0; color: "#50616e" }
-          GradientStop { position: .6; color: "#283743" }
-          GradientStop { position: 1; color: "#29333d" }
+          GradientStop { position: 0; color: '#50616e' }
+          GradientStop { position: .6; color: '#283743' }
+          GradientStop { position: 1; color: '#29333d' }
         }
       }
 
