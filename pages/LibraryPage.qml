@@ -48,7 +48,6 @@ Item {
     if (!event.isAutoRepeat) {
       platformsList.incrementCurrentIndex()
       gamesList.generatePathPoints()
-      channelUpSound.play()
     }
   }
 
@@ -56,7 +55,6 @@ Item {
     if (!event.isAutoRepeat) {
       platformsList.decrementCurrentIndex()
       gamesList.generatePathPoints()
-      channelDownSound.play()
     }
   }
 
@@ -89,6 +87,7 @@ Item {
     model: api.collections
     delegate: sectionDelegate
     pathItemCount: 5
+    property int previousIndex: 0
 
     path: Path {
       startX: 0; startY: platformsList.height - 21
@@ -97,6 +96,13 @@ Item {
       PathLine { x: 0; y: 0 }
       PathAttribute { name: 'itemScale'; value: 0.39 }
       PathAttribute { name: 'itemOpacity'; value: 0.2 }
+    }
+
+    onCurrentItemChanged: {
+      if (currentIndex > previousIndex) channelUpSound.play();
+      if (currentIndex < previousIndex) channelDownSound.play();
+
+      previousIndex = currentIndex;
     }
   }
 
@@ -110,7 +116,6 @@ Item {
     anchors.right: parent.right
     anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
-
 
     delegate: Item {
       property var style: getChannelsPanelStyle(currentPlatform.games);
