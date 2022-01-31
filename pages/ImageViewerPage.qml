@@ -86,21 +86,29 @@ Item {
     }
   }
 
-  ButtonPrompt {
-    id: selectPrompt
-    button: "a"
-    text: isRunning ? "Pause" : "Resume"
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.leftMargin: vpx(96)
-    anchors.bottomMargin: vpx(54)
+  Component.onCompleted: () => {
+    setAvailableActions({
+      [actionKeys.bottom]: {
+        label: isRunning ? "Pause" : "Resume",
+        visible: true,
+      },
+      [actionKeys.right]: {
+        label: 'Back',
+        visible: true
+      }
+    });
   }
 
-  ButtonPrompt {
-    button: "b"
-    text: "Back"
-    anchors.left: selectPrompt.right
-    anchors.leftMargin: vpx(21)
-    anchors.verticalCenter: selectPrompt.verticalCenter
+  onIsRunningChanged: {
+    setAvailableActions({
+      [actionKeys.bottom]: {
+        label: isRunning ? "Pause" : "Resume",
+        visible: true,
+      },
+      [actionKeys.right]: {
+        label: 'Back',
+        visible: true
+      }
+    });
   }
 }
