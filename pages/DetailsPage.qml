@@ -33,9 +33,9 @@ Item {
         id: gameTitle
         text: currentGame.title
         font.pointSize: vpx(25)
-        elide: Text.ElideRight
         anchors.right: parent.right
         anchors.left: parent.left
+        wrapMode: Text.Wrap
       }
 
       Rating {
@@ -203,7 +203,7 @@ Item {
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
-              elide: Text.ElideRight
+              wrapMode: Text.Wrap
             }
           }
 
@@ -222,7 +222,7 @@ Item {
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
-              elide: Text.ElideRight
+              wrapMode: Text.Wrap
             }
           }
 
@@ -242,7 +242,7 @@ Item {
               font.weight: Font.Black
               color: '#80FFFFFF'
               layer.enabled: false
-              elide: Text.ElideRight
+              wrapMode: Text.Wrap
             }
           }
         }
