@@ -129,7 +129,6 @@ ListView {
 
     StyledText {
       text: label()
-      font.family: convectionui.name
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
       anchors.leftMargin: vpx(6)
@@ -150,7 +149,6 @@ ListView {
         api.keys.isAccept(event) &&
         canExecute()
       ) {
-        selectSound.play();
         action();
       }
     }

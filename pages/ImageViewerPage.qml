@@ -16,11 +16,8 @@ Item {
     if (!event.isAutoRepeat) {
       if (api.keys.isCancel(event)) {
         navigate(pages.gameDetails);
-        event.accepted = true;
-        backSound.play();
       } else if (api.keys.isAccept(event)) {
         isRunning = !isRunning;
-        selectSound.play();
       }
     }
   }

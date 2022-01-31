@@ -393,8 +393,6 @@ Item {
   Keys.onPressed: {
     if (!event.isAutoRepeat && api.keys.isCancel(event)) {
       navigate(pages.library);
-      event.accepted = true;
-      backSound.play();
     }
   }
 }

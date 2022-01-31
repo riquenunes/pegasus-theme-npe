@@ -5,15 +5,88 @@ Item {
   id: prompt
   property string button
   property string text
+  property var sound
   width: icon.width + label.contentWidth + label.anchors.leftMargin
   height: icon.height
   property bool stateVisible: true
+
+  function onPressed(event) {
+    if (enabled) {
+      event.accepted = true;
+      ringAnimation.start();
+      sound.play();
+    }
+  }
+
+  SequentialAnimation {
+    id: ringAnimation
+    ParallelAnimation {
+      NumberAnimation {
+        target: icon
+        property: 'scale'
+        from: 1
+        to: 1.1
+        duration: 120
+      }
+      NumberAnimation {
+        target: ring
+        property: 'opacity'
+        from: 0
+        to: 1
+        duration: 120
+      }
+    }
+    ParallelAnimation {
+      NumberAnimation {
+        target: icon
+        property: 'scale'
+        from: 1.1
+        to: 1
+        duration: 120
+      }
+      NumberAnimation {
+        target: ring
+        property: 'scale'
+        from: 1
+        to: 1.3
+        duration: 120
+      }
+      NumberAnimation {
+        target: ring
+        property: 'opacity'
+        from: 1
+        to: 0
+        duration: 120
+      }
+    }
+    NumberAnimation {
+      target: ring
+      property: 'scale'
+      to: 1
+      duration: 0
+    }
+    NumberAnimation {
+      target: icon
+      property: 'scale'
+      to: 1
+      duration: 0
+    }
+  }
 
   Image {
     id: icon
     source: `../assets/images/buttons/${button}.png`
     width: vpx(32)
     height: vpx(32)
+  }
+
+  Image {
+    id: ring
+    source: '../assets/images/buttons/ring.png'
+    width: vpx(32)
+    height: vpx(32)
+    opacity: 0
+    scale: 1
   }
 
   StyledText {
@@ -69,6 +142,7 @@ Item {
             property: 'scale'
             to: 0
             duration: 300
+            easing.type: Easing.InBack
           }
           NumberAnimation {
             target: label

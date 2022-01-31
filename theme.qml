@@ -10,8 +10,7 @@ FocusScope {
   id: root
 
   Keys.onPressed: {
-    if (!event.isAutoRepeat) {
-    }
+    buttonActions.onPressed(event);
   }
 
   property var actionKeys: {
@@ -90,7 +89,23 @@ FocusScope {
       api.memory.set(key, value);
     }
 
-    pageLoader.source = `pages/${page}`;
+    function delay(cb, delayTime) {
+      function Timer() {
+        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
+      }
+
+      const timer = new Timer();
+      timer.interval = delayTime;
+      timer.repeat = false;
+      timer.triggered.connect(cb);
+      timer.start();
+    }
+
+    delay(() => {
+      pageLoader.source = `pages/${page}`;
+    }, 240); // delay page change until button press animation and sound is complete
+             // if actions to be executed by the buttons are moved to ButtonPrompt
+             // we can implement this there
   }
 
   property var memoryKeys: {
@@ -156,7 +171,7 @@ FocusScope {
   }
 
   ButtonActions {
-
+    id: buttonActions
   }
 
   Component.onCompleted: {

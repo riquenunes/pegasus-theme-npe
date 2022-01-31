@@ -72,10 +72,8 @@ Item {
     if (!event.isAutoRepeat) {
       if (api.keys.isAccept(event)) {
         currentGame.launch();
-        selectSound.play();
       } else if (api.keys.isDetails(event)) {
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
-        selectSound.play();
       }
     }
   }
