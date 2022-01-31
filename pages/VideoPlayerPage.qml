@@ -5,7 +5,6 @@ import QtQml 2.15
 import QtMultimedia 5.15
 
 Item {
-  FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   property var videoPath: api.memory.get(memoryKeys.videoPath)
   focus: true
   Keys.onPressed: {

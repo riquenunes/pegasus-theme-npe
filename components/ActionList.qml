@@ -15,7 +15,25 @@ ListView {
   onCurrentItemChanged: {
     if (currentIndex !== previousIndex) focusSound.play();
 
+    setAvailableActions(Object.assign(availableActions, {
+      [actionKeys.bottom]: {
+        label: 'Select',
+        visible: model.get(currentIndex).canExecute()
+      }
+    }));
+
     previousIndex = currentIndex;
+  }
+
+  onActiveFocusChanged: {
+    if (activeFocus) {
+      setAvailableActions(Object.assign(availableActions, {
+        [actionKeys.bottom]: {
+          label: 'Select',
+          visible: model.get(currentIndex).canExecute()
+        }
+      }));
+    }
   }
 
   highlight: Item {
@@ -27,7 +45,7 @@ ListView {
     Rectangle {
       visible: !listView.activeFocus
       anchors.fill: parent
-      color: null
+      color: 'Transparent'
       border.color: '#FFF'
       border.width: vpx(2)
       opacity: .2
@@ -109,24 +127,13 @@ ListView {
     height: vpx(45)
     opacity: canExecute() ? 1 : .3
 
-    Text {
+    StyledText {
       text: label()
-      color: "#FFF"
-      font.pointSize: vpx(18)
       font.family: convectionui.name
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
       anchors.leftMargin: vpx(6)
       opacity: parent.ListView.isCurrentItem ? 1 : 0.7
-
-      layer.enabled: true
-      layer.effect: DropShadow {
-        verticalOffset: 1
-        horizontalOffset: 1
-        color: "#80000000"
-        radius: 2
-        samples: 3
-      }
     }
 
     Rectangle {

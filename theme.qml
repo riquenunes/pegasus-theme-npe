@@ -4,9 +4,47 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.15
 import "pages"
+import "components"
 
 FocusScope {
   id: root
+
+  Keys.onPressed: {
+    if (!event.isAutoRepeat) {
+    }
+  }
+
+  property var actionKeys: {
+    'bottom': 'a',
+    'right': 'b',
+    'left': 'x',
+    'top': 'y'
+  }
+
+  property var availableActions: {
+    'a': { visible: true },
+    'b': { visible: true },
+    'x': { visible: true },
+    'y': { visible: true }
+  }
+
+  function setAvailableActions(replacementActions) {
+    const newActions = Object.values(actionKeys).reduce((newActions, key) => {
+      if (replacementActions[key]) {
+        newActions[key] = replacementActions[key];
+      } else {
+        newActions[key] = {
+          visible: false,
+          label: availableActions[key] ? availableActions[key].label : undefined
+        };
+      }
+
+      return newActions;
+    }, {})
+
+    availableActions = newActions;
+  }
+
 
   function vpx(size) {
     return Math.round(size * (Screen.height / 720))
@@ -115,6 +153,10 @@ FocusScope {
     id: pageLoader
     focus: true
     anchors.fill: parent
+  }
+
+  ButtonActions {
+
   }
 
   Component.onCompleted: {

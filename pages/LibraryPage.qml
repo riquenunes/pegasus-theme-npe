@@ -4,7 +4,6 @@ import QtGraphicalEffects 1.0
 import "../components"
 
 Item {
-  FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   focus: true
   Image {
     source: "../assets/images/wallpapers/2.png"
@@ -21,16 +20,14 @@ Item {
 
   Component {
     id: sectionDelegate
-    Text {
+    StyledText {
       id: sectionName
       anchors.left: parent.left
       horizontalAlignment: Text.AlignLeft
       opacity: PathView.itemOpacity
       z: index
       text: modelData.name
-      color: '#FFF'
       font.pointSize: vpx(30)
-      font.family: convectionui.name
       transform:[
         Translate {
           y: -sectionName.height * (1 - sectionName.PathView.itemOpacity)
@@ -41,14 +38,6 @@ Item {
           yScale: sectionName.PathView.itemScale
         }
       ]
-      layer.enabled: true
-      layer.effect: DropShadow {
-        verticalOffset: vpx(1)
-        horizontalOffset: vpx(1)
-        color: "#88000000"
-        radius: 1
-        samples: vpx(1)
-      }
     }
   }
 
@@ -236,21 +225,16 @@ Item {
     }
   }
 
-  ButtonPrompt {
-    id: selectPrompt
-    button: "a"
-    text: "Select"
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.leftMargin: vpx(96)
-    anchors.bottomMargin: vpx(54)
-  }
-
-  ButtonPrompt {
-    button: "x"
-    text: "Game details"
-    anchors.left: selectPrompt.right
-    anchors.leftMargin: vpx(21)
-    anchors.verticalCenter: selectPrompt.verticalCenter
+  Component.onCompleted: {
+    setAvailableActions({
+      [actionKeys.bottom]: {
+        label: 'Select',
+        visible: true
+      },
+      [actionKeys.left]: {
+        label: 'Game details',
+        visible: true
+      }
+    });
   }
 }

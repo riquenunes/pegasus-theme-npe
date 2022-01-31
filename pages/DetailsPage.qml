@@ -7,7 +7,6 @@ import QtQuick.Layouts 1.1
 import "../components"
 
 Item {
-  FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   property var currentGame: api.memory.get(memoryKeys.currentGame)
   property var screenshotPath: currentGame.assets.background
       || currentGame.assets.banner
@@ -174,7 +173,7 @@ Item {
 
         Image {
           Layout.maximumWidth: vpx(156)
-          anchors.top: parent.top
+          Layout.alignment: Qt.AlignTop
           width: vpx(156)
           source: currentGame.assets.poster || currentGame.assets.boxFront || currentGame.assets.logo
           asynchronous: true
@@ -185,8 +184,8 @@ Item {
 
         ColumnLayout {
           Layout.fillWidth: true
+          Layout.alignment: Qt.AlignTop
 
-          anchors.top: parent.top
           spacing: vpx(12)
 
           ColumnLayout {
@@ -365,10 +364,26 @@ Item {
         target: cardsList
 
         onCurrentIndexChanged: () => {
-          if (isCurrentItem) loader.forceActiveFocus();
+          if (isCurrentItem) {
+            setAvailableActions({
+              [actionKeys.right]: {
+                label: 'Back',
+                visible: true
+              }
+            });
+
+            loader.forceActiveFocus();
+          }
         }
 
         Component.onCompleted: () => {
+          setAvailableActions({
+            [actionKeys.right]: {
+              label: 'Back',
+              visible: true
+            }
+          });
+
           if (index === 0) loader.forceActiveFocus();
         }
       }
@@ -381,23 +396,5 @@ Item {
       event.accepted = true;
       backSound.play();
     }
-  }
-
-  ButtonPrompt {
-    id: selectPrompt
-    button: "a"
-    text: "Select"
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.leftMargin: vpx(96)
-    anchors.bottomMargin: vpx(54)
-  }
-
-  ButtonPrompt {
-    button: "b"
-    text: "Back"
-    anchors.left: selectPrompt.right
-    anchors.leftMargin: vpx(21)
-    anchors.verticalCenter: selectPrompt.verticalCenter
   }
 }

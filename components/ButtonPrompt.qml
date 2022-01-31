@@ -2,10 +2,12 @@ import QtQuick 2.8
 import QtGraphicalEffects 1.0
 
 Item {
+  id: prompt
   property string button
   property string text
   width: icon.width + label.contentWidth + label.anchors.leftMargin
   height: icon.height
+  property bool stateVisible: true
 
   Image {
     id: icon
@@ -25,4 +27,69 @@ Item {
       y: vpx(1)
     }
   }
+
+  states: [
+    State{
+      name: "Visible"
+      PropertyChanges{ target: prompt; stateVisible: true }
+    },
+    State{
+      name:"Invisible"
+      PropertyChanges{ target: prompt; stateVisible: false }
+    }
+  ]
+
+  transitions: [
+    Transition {
+      to: "Visible"
+      SequentialAnimation {
+        NumberAnimation {
+          target: prompt
+          property: "width"
+          to: icon.width + label.contentWidth + label.anchors.leftMargin
+          duration: 100
+        }
+        ParallelAnimation {
+          NumberAnimation {
+            target: icon
+            property: "scale"
+            to: 1
+            duration: 300
+            easing.type: Easing.OutBounce
+          }
+          NumberAnimation {
+            target: label
+            property: "opacity"
+            to: 1
+            duration: 300
+          }
+        }
+      }
+    },
+    Transition {
+      to: "Invisible"
+      SequentialAnimation {
+        ParallelAnimation {
+          NumberAnimation {
+            target: icon
+            property: "scale"
+            to: 0
+            duration: 300
+          }
+          NumberAnimation {
+            target: label
+            property: "opacity"
+            to: 0
+            duration: 300
+          }
+        }
+        NumberAnimation {
+          target: prompt
+          property: "width"
+          to: 0
+          duration: 100
+        }
+      }
+    }
+  ]
 }

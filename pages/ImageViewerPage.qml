@@ -7,7 +7,6 @@ import QtMultimedia 5.15
 import "../components"
 
 Item {
-  FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   property var imagePaths: api.memory.get(memoryKeys.imagePaths)
   property var isRunning: true
   property int currentIndex: 0
@@ -77,11 +76,9 @@ Item {
       radius: height
     }
 
-    Text {
+    StyledText {
       id: pageText
-      color: "#FFF"
       font.pointSize: vpx(16)
-      font.family: convectionui.name
       font.weight: Font.Black
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
