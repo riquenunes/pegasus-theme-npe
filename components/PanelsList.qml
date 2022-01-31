@@ -3,14 +3,14 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
 
 Item {
-  property real cardWidth
-  property real cardHeight
-  height: cardHeight
+  property real panelWidth
+  property real panelHeight
+  height: panelHeight
   property Component delegate
-  property alias model: cardsList.model
-  property alias currentIndex: cardsList.currentIndex
-  property var incrementCurrentIndex: cardsList.incrementCurrentIndex
-  property var decrementCurrentIndex: cardsList.decrementCurrentIndex
+  property alias model: panelsList.model
+  property alias currentIndex: panelsList.currentIndex
+  property var incrementCurrentIndex: panelsList.incrementCurrentIndex
+  property var decrementCurrentIndex: panelsList.decrementCurrentIndex
   property bool animate: true
   property var generatePathPoints: () => {
     const getScale = (index) => [
@@ -23,12 +23,12 @@ Item {
 
     const getX = (index) => {
       const distances = [0, -2, -27, -39, -48, -52, -54, -55, -54, -55, -52, -52, -50, -50,-50];
-      const startingItemX = cardWidth / 2;
+      const startingItemX = panelWidth / 2;
 
       if (index === 0) return startingItemX;
 
-      const currentWidth = cardWidth * getScale(index);
-      const previousWidth = cardWidth * getScale(index - 1);
+      const currentWidth = panelWidth * getScale(index);
+      const previousWidth = panelWidth * getScale(index - 1);
       const previousX = getX(index - 1);
 
       return previousWidth + previousX + vpx(distances[index]);
@@ -41,7 +41,7 @@ Item {
     `, root);
 
     const path = createQtQuickObject('Path { startX: 0; startY: 0 }');
-    const itemsCount = cardsList.pathItemCount
+    const itemsCount = panelsList.pathItemCount
 
     path.pathElements = [...Array(itemsCount + 1).keys()]
       .reduce((acc, i) => ([
@@ -61,27 +61,27 @@ Item {
       ]).map(createQtQuickObject);
 
     animate = true;
-    cardsList.path = path;
+    panelsList.path = path;
   }
 
   Component {
-    id: cardDelegate
+    id: panelDelegate
     Item {
-      id: card
-      width: cardWidth
-      height: cardHeight
+      id: panel
+      width: panelWidth
+      height: panelHeight
       scale: PathView.itemScale
       transformOrigin: Item.Left
       opacity: 0
       z: -x
       anchors.top: parent.top
       transform: Translate {
-        y: card.PathView.itemOffsetY
+        y: panel.PathView.itemOffsetY
 
         SequentialAnimation on x  {
           PauseAnimation { duration: 50 * index }
           NumberAnimation {
-            from: -(card.PathView.itemX - card.PathView.previousItemX)
+            from: -(panel.PathView.itemX - panel.PathView.previousItemX)
             to: 0
             duration: 300
             easing.type: Easing.OutCubic
@@ -102,8 +102,8 @@ Item {
       SequentialAnimation on scale  {
         PauseAnimation { duration: 50 * index }
         NumberAnimation {
-          from: card.PathView.previousItemScale
-          to: card.PathView.itemScale
+          from: panel.PathView.previousItemScale
+          to: panel.PathView.itemScale
           duration: 300
           easing.type: Easing.OutCubic
         }
@@ -117,7 +117,7 @@ Item {
         height: parent.height
 
         Loader {
-          id: cardLoader
+          id: panelLoader
           property var modelData: parent.modelData
           property var isCurrentItem: parent.parent.PathView.isCurrentItem
           property var index: parent.itemIndex
@@ -141,7 +141,7 @@ Item {
 
 
       // Text {
-      //   text: card.PathView.itemX
+      //   text: panel.PathView.itemX
       //   font.family: convectionui.name
       //   font.pointSize: vpx(14)
       //   font.letterSpacing: vpx(1)
@@ -191,19 +191,19 @@ Item {
         anchors.left: content.right
         height: parent.height
         width: height * 0.09
-        source: "../assets/images/misc/card-shadow.png"
+        source: "../assets/images/misc/panel-shadow.png"
       }
     }
   }
 
   PathView {
-    id: cardsList
+    id: panelsList
     anchors.fill: parent
     pathItemCount: model.count < 14
       ? model.count
       : 14
     movementDirection: PathView.Positive
-    delegate: cardDelegate
+    delegate: panelDelegate
 
     property int previousIndex: 0
 

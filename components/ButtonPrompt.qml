@@ -29,14 +29,8 @@ Item {
   }
 
   states: [
-    State{
-      name: "Visible"
-      PropertyChanges{ target: prompt; stateVisible: true }
-    },
-    State{
-      name:"Invisible"
-      PropertyChanges{ target: prompt; stateVisible: false }
-    }
+    State { name: "Visible" },
+    State { name: "Invisible" }
   ]
 
   transitions: [

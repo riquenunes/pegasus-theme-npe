@@ -102,10 +102,10 @@ Item {
     }
   }
 
-  CardsList {
+  PanelsList {
     id: gamesList
-    cardWidth: getChannelsPanelDimensions(currentPlatform.games).width
-    cardHeight: getChannelsPanelDimensions(currentPlatform.games).height
+    panelWidth: getChannelsPanelDimensions(currentPlatform.games).width
+    panelHeight: getChannelsPanelDimensions(currentPlatform.games).height
     model: currentPlatform.games
     anchors.top: platformsList.bottom
     anchors.left: platformsList.left

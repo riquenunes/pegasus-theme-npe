@@ -21,12 +21,12 @@ Item {
     anchors.fill: parent
   }
 
-  Keys.onLeftPressed: cardsList.decrementCurrentIndex()
-  Keys.onRightPressed: cardsList.incrementCurrentIndex()
+  Keys.onLeftPressed: panelsList.decrementCurrentIndex()
+  Keys.onRightPressed: panelsList.incrementCurrentIndex()
 
-  // quick actions card
+  // quick actions panel
   Component {
-    id: quickActionsCard
+    id: quickActionsPanel
 
     Item {
       StyledText {
@@ -70,9 +70,9 @@ Item {
     }
   }
 
-  // images card
+  // images panel
   Component {
-    id: imagesCard
+    id: imagesPanel
 
     Item {
       StyledText {
@@ -152,9 +152,9 @@ Item {
     }
   }
 
-  // details card
+  // details panel
   Component {
-    id: detailsCard
+    id: detailsPanel
 
     Item {
       StyledText {
@@ -250,9 +250,9 @@ Item {
     }
   }
 
-  // description card
+  // description panel
   Component {
-    id: descriptionCard
+    id: descriptionPanel
 
     Item {
       StyledText {
@@ -309,26 +309,26 @@ Item {
     }
   }
 
-  CardsList {
-    id: cardsList
-    cardWidth: vpx(450)
-    cardHeight: vpx(480)
+  PanelsList {
+    id: panelsList
+    panelWidth: vpx(450)
+    panelHeight: vpx(480)
     model: ListModel {
       ListElement {
         type: "quick-actions"
-        component: () => quickActionsCard
+        component: () => quickActionsPanel
       }
       ListElement {
         type: "images"
-        component: () => imagesCard
+        component: () => imagesPanel
       }
       ListElement {
         type: "details"
-        component: () => detailsCard
+        component: () => detailsPanel
       }
       ListElement {
         type: "description"
-        component: () => descriptionCard
+        component: () => descriptionPanel
       }
     }
     anchors.verticalCenter: parent.verticalCenter
@@ -361,7 +361,7 @@ Item {
       }
 
       Connections {
-        target: cardsList
+        target: panelsList
 
         onCurrentIndexChanged: () => {
           if (isCurrentItem) {
