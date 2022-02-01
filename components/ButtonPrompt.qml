@@ -102,8 +102,8 @@ Item {
   }
 
   states: [
-    State { name: 'Visible' },
-    State { name: 'Invisible' }
+    State { name: 'Visible'; when: enabled },
+    State { name: 'Invisible'; when: !enabled }
   ]
 
   transitions: [

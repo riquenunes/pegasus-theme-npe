@@ -29,7 +29,6 @@ Row {
     button: actionKeys.bottom
     text: availableActions[actionKeys.bottom].label || ''
     enabled: availableActions[actionKeys.bottom].visible
-    state: availableActions[actionKeys.bottom].visible ? 'Visible' : 'Invisible'
     sound: selectSound
   }
 
@@ -38,7 +37,6 @@ Row {
     button: actionKeys.right
     text: availableActions[actionKeys.right].label || ''
     enabled: availableActions[actionKeys.right].visible
-    state: availableActions[actionKeys.right].visible ? 'Visible' : 'Invisible'
     sound: backSound
   }
 
@@ -47,7 +45,6 @@ Row {
     button: actionKeys.left
     text: availableActions[actionKeys.left].label || ''
     enabled: availableActions[actionKeys.left].visible
-    state: availableActions[actionKeys.left].visible ? 'Visible' : 'Invisible'
     sound: selectSound
   }
 
@@ -56,7 +53,6 @@ Row {
     button: actionKeys.top
     text: availableActions[actionKeys.top].label || ''
     enabled: availableActions[actionKeys.top].visible
-    state: availableActions[actionKeys.top].visible ? 'Visible' : 'Invisible'
     sound: selectSound
   }
 }
