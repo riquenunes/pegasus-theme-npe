@@ -4,17 +4,25 @@ import QtGraphicalEffects 1.0
 
 PathView {
   id: panelsList
+  interactive: false
   height: panelHeight
   pathItemCount: model.count < 14
     ? model.count
     : 14
-  movementDirection: PathView.Positive
 
   property int previousIndex: 0
   property real panelWidth
   property real panelHeight
   property var panelContent
   property var indexPersistenceKey
+
+  function nextItem() {
+    if (interactive) incrementCurrentIndex();
+  }
+
+  function previousItem() {
+    if (interactive) decrementCurrentIndex();
+  }
 
   onCurrentItemChanged: {
     if (currentIndex !== previousIndex) {
@@ -27,22 +35,14 @@ PathView {
     previousIndex = currentIndex;
   }
 
-  onModelChanged: {
-    previousIndex = 0;
-    // currentIndex = api.memory.get(indexPersistenceKey) || 0;
-    // generatePathPoints();
-  }
-
-  Component.onCompleted: {
-    // generatePathPoints();
-    // delay(() => { currentIndex = api.memory.get(indexPersistenceKey) || 0 }, 1000);
-  }
-
   onPathChanged: {
-    currentIndex = api.memory.get(indexPersistenceKey)
+    interactive = false;
+    delay(() => {
+      currentIndex = api.memory.get(indexPersistenceKey);
+      interactive = true;
+    }, 50 * pathItemCount);
   }
 
-  // property Component delegate
   function generatePathPoints() {
     const getScale = (index) => [
       1, .85938, .7531, .666, .600, .54688, .503, .4656, .42813, .403125, .375, .353125, .334375, .32, .32

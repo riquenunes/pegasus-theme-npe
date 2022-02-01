@@ -59,11 +59,11 @@ Item {
   }
 
   Keys.onLeftPressed: {
-    if (!event.isAutoRepeat) gamesList.decrementCurrentIndex()
+    if (!event.isAutoRepeat) gamesList.previousItem()
   }
 
   Keys.onRightPressed: {
-    if (!event.isAutoRepeat) gamesList.incrementCurrentIndex()
+    if (!event.isAutoRepeat) gamesList.nextItem()
   }
 
   Keys.onPressed: {
@@ -106,7 +106,6 @@ Item {
         api.memory.set(memoryKeys.libraryChannelIndex, currentIndex);
       }
 
-      // gamesList.generatePathPoints();
       previousIndex = currentIndex;
     }
 

@@ -55,9 +55,6 @@ FocusScope {
 
     Item {
       id: wrapper
-      // property var modelData: panel.parent.model.get(itemIndex)
-      // property var isCurrentItem: panel.PathView.isCurrentItem
-      // property var index: itemIndex
       width: parent.width
       height: parent.height
     }
@@ -109,8 +106,9 @@ FocusScope {
     uniform sampler2D source;
     uniform sampler2D mask;
     void main(void)
-
-    { gl_FragColor = texture2D(source, vec2(qt_TexCoord0.s, 1.0 - qt_TexCoord0.t)) * texture2D(mask, qt_TexCoord0).a; }
+    {
+      gl_FragColor = texture2D(source, vec2(qt_TexCoord0.s, 1.0 - qt_TexCoord0.t)) * texture2D(mask, qt_TexCoord0).a;
+    }
     `
   }
 
