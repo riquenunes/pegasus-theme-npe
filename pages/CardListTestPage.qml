@@ -1,11 +1,11 @@
-import "../components"
+import '../components'
 
 import QtQuick 2.15
 import QtGraphicalEffects 1.12
 
 
 ListView {
-  property real cardWidth: vpx(200)
+  property real panelWidth: vpx(200)
 
   function getScale(screenIndex) {
     const scalesByScreenIndex = [
@@ -23,8 +23,8 @@ ListView {
 
     if (screenIndex === 0) return startingItemX;
 
-    const currentWidth = cardWidth * getScale(screenIndex);
-    const previousWidth = cardWidth * getScale(screenIndex - 1);
+    const currentWidth = panelWidth * getScale(screenIndex);
+    const previousWidth = panelWidth * getScale(screenIndex - 1);
     const previousX = getXOffset(screenIndex - 1);
 
     return previousWidth + previousX + vpx(distances[screenIndex]);
@@ -34,8 +34,8 @@ ListView {
   function getX(screenIndex) {
     if (screenIndex === 0) return 0;
 
-    const initialWidth = cardWidth;
-    const currentWidth = cardWidth * getScale(screenIndex);
+    const initialWidth = panelWidth;
+    const currentWidth = panelWidth * getScale(screenIndex);
     const widthDifference = currentWidth - initialWidth;
     const distances = [0, -2, -27, -39, -48, -52, -54, -55, -54, -55, -52, -52, -50, -50, -50];
     const previousDifference = getX(screenIndex - 1);
@@ -55,7 +55,7 @@ ListView {
   delegate: Rectangle {
     property int screenIndex: index - list.currentIndex
 
-    color: "Red"
+    color: 'Red'
     width: vpx(200)
     height: vpx(200)
     scale: getScale(screenIndex)

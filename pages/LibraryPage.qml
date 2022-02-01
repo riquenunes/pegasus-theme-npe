@@ -26,7 +26,7 @@ Item {
       horizontalAlignment: Text.AlignLeft
       opacity: PathView.itemOpacity
       z: index
-      text: modelData.name
+      text: name
       font.pointSize: vpx(30)
       transform:[
         Translate {
@@ -43,18 +43,18 @@ Item {
 
   property var currentPlatform: api.collections.get(platformsList.currentIndex)
   property var currentGame: currentPlatform.games.get(gamesList.currentIndex)
+  property var style: getChannelsPanelStyle(currentPlatform.games)
+  property var panelDimensions: getChannelsPanelDimensions(currentPlatform.games, style)
 
   Keys.onUpPressed: {
     if (!event.isAutoRepeat) {
       platformsList.incrementCurrentIndex()
-      gamesList.generatePathPoints()
     }
   }
 
   Keys.onDownPressed: {
     if (!event.isAutoRepeat) {
       platformsList.decrementCurrentIndex()
-      gamesList.generatePathPoints()
     }
   }
 
@@ -99,41 +99,48 @@ Item {
     }
 
     onCurrentItemChanged: {
-      if (currentIndex > previousIndex) channelUpSound.play();
-      if (currentIndex < previousIndex) channelDownSound.play();
+      if (currentIndex !== previousIndex) {
+        if (currentIndex > previousIndex) channelUpSound.play();
+        if (currentIndex < previousIndex) channelDownSound.play();
 
+        api.memory.set(memoryKeys.libraryChannelIndex, currentIndex);
+      }
+
+      // gamesList.generatePathPoints();
       previousIndex = currentIndex;
+    }
+
+    Component.onCompleted: {
+      platformsList.currentIndex = api.memory.get(memoryKeys.libraryChannelIndex) || 0;
     }
   }
 
   PanelsList {
     id: gamesList
-    panelWidth: getChannelsPanelDimensions(currentPlatform.games).width
-    panelHeight: getChannelsPanelDimensions(currentPlatform.games).height
+    panelWidth: panelDimensions.width
+    panelHeight: panelDimensions.height
     model: currentPlatform.games
     anchors.top: platformsList.bottom
     anchors.left: platformsList.left
     anchors.right: parent.right
     anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
+    indexPersistenceKey: memoryKeys.libraryPanelIndex
 
-    delegate: Item {
-      property var style: getChannelsPanelStyle(currentPlatform.games);
-      property string boxArt: modelData.assets.poster
-      property bool hasBoxArt: !!boxArt
-
+    delegate: PanelWrapper {
       Image {
         id: background
         height: parent.height
         width: parent.width
-        source: modelData.assets.poster || modelData.assets.background || modelData.assets.screenshot || '../assets/images/panels/2.jpg'
+        sourceSize.width: width
+        sourceSize.height: height
+        source: assets.poster || assets.background || assets.screenshot || '../assets/images/panels/2.jpg'
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         cache: true
-        mipmap: true
-        layer.enabled: !modelData.assets.poster
-          && (modelData.assets.background || modelData.assets.screenshot)
-          && modelData.assets.logo
+        layer.enabled: !assets.poster
+          && (assets.background || assets.screenshot)
+          && assets.logo
         layer.effect: FastBlur {
           anchors.fill: background
           source: background
@@ -160,7 +167,7 @@ Item {
 
         StyledText {
           font.pointSize: vpx(20)
-          text: modelData.title
+          text: title
           anchors.bottom: parent.bottom
           anchors.left: parent.left
           anchors.right: parent.right
@@ -171,9 +178,8 @@ Item {
         }
 
         StyledText {
-          id: summary
           font.pointSize: vpx(16)
-          text: modelData.summary
+          text: summary
           anchors.bottom: parent.bottom
           anchors.left: parent.left
           anchors.right: parent.right
@@ -182,21 +188,21 @@ Item {
           anchors.bottomMargin: vpx(15)
           opacity: .8
           elide: Text.ElideRight
-          visible: !hasBoxArt && !summary.truncated
+          visible: !truncated
         }
       }
 
       Image {
         id: logo
-        source: modelData.assets.logo
+        source: assets.logo
         fillMode: Image.PreserveAspectFit
         asynchronous: true
-        mipmap: true
         cache: true
         anchors.leftMargin: vpx(20)
         anchors.rightMargin: vpx(20)
         height: vpx(160)
-        visible: modelData.assets.logo && !modelData.assets.poster
+        sourceSize.height: height
+        visible: assets.logo && !assets.poster
 
         // Cover panel specific options
         anchors.left: !genericPanelOverlay.visible ? parent.left : undefined

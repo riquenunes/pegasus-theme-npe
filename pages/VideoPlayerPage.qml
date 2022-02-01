@@ -8,11 +8,8 @@ Item {
   property var videoPath: api.memory.get(memoryKeys.videoPath)
   focus: true
   Keys.onPressed: {
-    if (!event.isAutoRepeat) {
-      if (api.keys.isCancel(event)) {
-        navigate(pages.gameDetails);
-        backSound.play();
-      }
+    if (!event.isAutoRepeat && api.keys.isCancel(event)) {
+      navigate(pages.gameDetails);
     }
   }
 
@@ -23,5 +20,14 @@ Item {
     source: videoPath
     anchors.fill: parent
     autoPlay: true
+  }
+
+  Component.onCompleted: () => {
+    setAvailableActions({
+      [actionKeys.right]: {
+        label: 'Back',
+        visible: true
+      }
+    });
   }
 }

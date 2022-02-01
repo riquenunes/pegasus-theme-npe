@@ -62,8 +62,7 @@ FocusScope {
     return panelStyle.generic;
   }
 
-  function getChannelsPanelDimensions(channelItems) {
-    const style = getChannelsPanelStyle(channelItems);
+  function getChannelsPanelDimensions(channelItems, style) {
     const map = {
       [panelStyle.cover]: {
         width: vpx(234),
@@ -78,6 +77,18 @@ FocusScope {
     return map[style];
   }
 
+  function delay(cb, delayTime) {
+    function Timer() {
+      return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
+    }
+
+    const timer = new Timer();
+    timer.interval = delayTime;
+    timer.repeat = false;
+    timer.triggered.connect(cb);
+    timer.start();
+  }
+
 
   function navigate(page, params) {
     api.memory.set(memoryKeys.page, page);
@@ -89,17 +100,7 @@ FocusScope {
       api.memory.set(key, value);
     }
 
-    function delay(cb, delayTime) {
-      function Timer() {
-        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
-      }
 
-      const timer = new Timer();
-      timer.interval = delayTime;
-      timer.repeat = false;
-      timer.triggered.connect(cb);
-      timer.start();
-    }
 
     delay(() => {
       pageLoader.source = `pages/${page}`;
@@ -112,7 +113,10 @@ FocusScope {
     'page': 'page',
     'currentGame': 'current-game',
     'videoPath': 'video-path',
-    'imagePaths': 'image-paths'
+    'imagePaths': 'image-paths',
+    'libraryChannelIndex': 'library.channel-index',
+    'libraryPanelIndex': 'library.panel-index',
+    'gameDetailsPanelIndex': 'game-details.panel-index'
   }
 
   property var pages: {

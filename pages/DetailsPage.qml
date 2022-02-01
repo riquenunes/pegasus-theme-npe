@@ -157,6 +157,19 @@ Item {
     id: detailsPanel
 
     Item {
+      focus: true
+
+      onActiveFocusChanged: {
+        if (activeFocus) {
+          setAvailableActions({
+            [actionKeys.right]: {
+              label: 'Back',
+              visible: true
+            }
+          });
+        }
+      }
+
       StyledText {
         id: detailsHeader
         text: 'Details'
@@ -177,7 +190,7 @@ Item {
           width: vpx(156)
           source: currentGame.assets.poster || currentGame.assets.boxFront || currentGame.assets.logo
           asynchronous: true
-          mipmap: true
+          cache: true
           fillMode: Image.PreserveAspectFit
           verticalAlignment: Image.AlignTop
         }
@@ -286,6 +299,17 @@ Item {
           color: '#80FFFFFF'
           layer.enabled: false
         }
+
+        onActiveFocusChanged: {
+          if (activeFocus) {
+            setAvailableActions({
+              [actionKeys.right]: {
+                label: 'Back',
+                visible: true
+              }
+            });
+          }
+        }
       }
 
       Row {
@@ -334,46 +358,31 @@ Item {
     anchors.verticalCenter: parent.verticalCenter
     anchors.left: parent.left
     anchors.leftMargin: vpx(67)
-    delegate: Rectangle {
-      width: parent.width
-      height: parent.height
+    indexPersistenceKey: memoryKeys.gameDetailsPanelIndex
+    delegate: PanelWrapper {
+      Rectangle {
+        width: parent.width
+        height: parent.height
 
-      LinearGradient {
-        anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(parent.width, parent.height)
-        gradient: Gradient {
-          GradientStop { position: 0; color: '#50616e' }
-          GradientStop { position: .6; color: '#283743' }
-          GradientStop { position: 1; color: '#29333d' }
-        }
-      }
-
-      Loader {
-        id: loader
-        focus: isCurrentItem
-        anchors.fill: parent
-        anchors.leftMargin: vpx(25)
-        anchors.topMargin: vpx(25)
-        anchors.rightMargin: vpx(25)
-        anchors.bottomMargin: vpx(25)
-        sourceComponent: modelData.component()
-      }
-
-      Connections {
-        target: panelsList
-
-        onCurrentIndexChanged: () => {
-          if (isCurrentItem) {
-            setAvailableActions({
-              [actionKeys.right]: {
-                label: 'Back',
-                visible: true
-              }
-            });
-
-            loader.forceActiveFocus();
+        LinearGradient {
+          anchors.fill: parent
+          start: Qt.point(0, 0)
+          end: Qt.point(parent.width, parent.height)
+          gradient: Gradient {
+            GradientStop { position: 0; color: '#50616e' }
+            GradientStop { position: .6; color: '#283743' }
+            GradientStop { position: 1; color: '#29333d' }
           }
+        }
+
+        Loader {
+          id: loader
+          anchors.fill: parent
+          anchors.leftMargin: vpx(25)
+          anchors.topMargin: vpx(25)
+          anchors.rightMargin: vpx(25)
+          anchors.bottomMargin: vpx(25)
+          sourceComponent: component()
         }
 
         Component.onCompleted: () => {
@@ -384,7 +393,7 @@ Item {
             }
           });
 
-          if (index === 0) loader.forceActiveFocus();
+          loader.forceActiveFocus();
         }
       }
     }
@@ -392,6 +401,7 @@ Item {
 
   Keys.onPressed: {
     if (!event.isAutoRepeat && api.keys.isCancel(event)) {
+      api.memory.set(memoryKeys.gameDetailsPanelIndex, 0);
       navigate(pages.library);
     }
   }
