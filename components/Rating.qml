@@ -1,4 +1,4 @@
-import QtQuick 2.8
+import QtQuick 2.15
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
@@ -17,40 +17,14 @@ Item {
     width: parent.width * parent.rating
     clip: true
 
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
+    Repeater {
+      model: 6
 
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-filled.png'
-      width: vpx(24)
-      height: vpx(24)
+      Image {
+        source: '../assets/images/misc/star-filled.png'
+        width: vpx(24)
+        height: vpx(24)
+      }
     }
   }
 
@@ -58,40 +32,14 @@ Item {
     spacing: vpx(6)
     anchors.fill: parent
 
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
+    Repeater {
+      model: 6
 
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
-    }
-
-    Image {
-      source: '../assets/images/misc/star-empty.png'
-      width: vpx(24)
-      height: vpx(24)
+      Image {
+        source: '../assets/images/misc/star-empty.png'
+        width: vpx(24)
+        height: vpx(24)
+      }
     }
   }
 }
