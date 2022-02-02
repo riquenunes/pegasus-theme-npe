@@ -62,53 +62,17 @@ ListView {
       }
       radius: vpx(5)
       anchors.fill: parent
-      clip: true
 
       RadialGradient {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.bottom
         height: parent.height
-        // opacity: .8
         gradient: Gradient {
           GradientStop { position: 0.0; color: '#66ffffff' }
           GradientStop { position: 0.5; color: 'transparent' }
         }
       }
-
-      // LinearGradient {
-      //   id: glow
-      //   width: vpx(160)
-      //   height: vpx(160)
-      //   anchors.verticalCenter: parent.verticalCenter
-
-      //   x: 0
-      //   start: Qt.point(0, 0)
-      //   end: Qt.point(vpx(160), vpx(160))
-      //   opacity: .3
-
-      //   NumberAnimation on x {
-      //     from: bg.width
-      //     to: -width
-      //     duration: 4000
-      //     loops: Animation.Infinite
-      //   }
-
-      //   gradient: Gradient {
-      //     GradientStop {
-      //       position: .3
-      //       color: 'transparent'
-      //     }
-      //     GradientStop {
-      //       position: .5
-      //       color: 'white'
-      //     }
-      //     GradientStop {
-      //       position: .7
-      //       color: 'transparent'
-      //     }
-      //   }
-      // }
 
       layer.enabled: true
       layer.effect: DropShadow {
@@ -120,6 +84,48 @@ ListView {
       }
     }
 
+    Rectangle {
+      anchors.fill: parent
+      radius: bg.radius
+      visible: bg.visible
+      color: 'transparent'
+      clip: true
+
+      LinearGradient {
+        id: glow
+        height: (parent.height < parent.width ? parent.height : parent.width) * 3
+        width: height
+        anchors.verticalCenter: parent.verticalCenter
+
+        x: 0
+        start: Qt.point(0, height - (height / 4))
+        end: Qt.point(width - (width / 4), height)
+        opacity: .2
+
+        NumberAnimation on x {
+          running: parent.visible
+          from: parent.width
+          to: -parent.width - width
+          duration: 4000
+          loops: Animation.Infinite
+        }
+
+        gradient: Gradient {
+          GradientStop {
+            position: 0
+            color: 'transparent'
+          }
+          GradientStop {
+            position: .5
+            color: 'white'
+          }
+          GradientStop {
+            position: 1
+            color: 'transparent'
+          }
+        }
+      }
+    }
   }
   highlightFollowsCurrentItem: false
   delegate: Item {
