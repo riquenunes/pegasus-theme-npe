@@ -5,18 +5,6 @@ import '../components'
 
 Item {
   focus: true
-  Image {
-    source: '../assets/images/wallpapers/2.png'
-    fillMode: Image.PreserveAspectCrop
-    anchors.fill: parent
-  }
-
-  Image {
-    id: stage
-    source: '../assets/images/stages/0003.png'
-    fillMode: Image.PreserveAspectCrop
-    anchors.fill: parent
-  }
 
   Component {
     id: sectionDelegate
@@ -31,7 +19,6 @@ Item {
       transform:[
         Translate {
           y: -sectionName.height * (1 - sectionName.PathView.itemOpacity)
-
         },
         Scale {
           xScale: sectionName.PathView.itemScale
@@ -71,6 +58,7 @@ Item {
       if (api.keys.isAccept(event)) {
         currentGame.launch();
       } else if (api.keys.isDetails(event)) {
+        stage.state = 'Invisible';
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
       }
     }

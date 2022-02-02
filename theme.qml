@@ -13,6 +13,63 @@ FocusScope {
     buttonActions.onPressed(event);
   }
 
+  Image {
+    source: 'assets/images/wallpapers/2.png'
+    fillMode: Image.PreserveAspectCrop
+    anchors.fill: parent
+  }
+
+  Image {
+    id: stage
+    source: 'assets/images/stages/0003.png'
+    fillMode: Image.PreserveAspectCrop
+    anchors.fill: parent
+    opacity: 0
+    anchors.topMargin: vpx(30)
+
+    states: [
+      State { name: 'Visible'; when: enabled },
+      State { name: 'Invisible'; when: !enabled }
+    ]
+
+    transitions: [
+      Transition {
+        to: 'Visible'
+        ParallelAnimation {
+          NumberAnimation {
+            target: stage
+            property: 'anchors.topMargin'
+            to: 0
+            duration: 100
+          }
+          NumberAnimation {
+            target: stage
+            property: 'opacity'
+            to: 1
+            duration: 200
+          }
+        }
+      },
+      Transition {
+        to: 'Invisible'
+        ParallelAnimation {
+          NumberAnimation {
+            target: stage
+            property: 'anchors.topMargin'
+            to: vpx(30)
+            duration: 100
+          }
+          NumberAnimation {
+            target: stage
+            property: 'opacity'
+            to: 0
+            duration: 200
+          }
+        }
+      }
+    ]
+  }
+
   property var actionKeys: {
     'bottom': 'a',
     'right': 'b',
@@ -100,10 +157,9 @@ FocusScope {
       api.memory.set(key, value);
     }
 
-
-
     delay(() => {
-      pageLoader.source = `pages/${page}`;
+      stage.state = page.showStage ? 'Visible' : 'Invisible';
+      pageLoader.source = `pages/${page.path}`;
     }, 240); // delay page change until button press animation and sound is complete
              // if actions to be executed by the buttons are moved to ButtonPrompt
              // we can implement this there
@@ -120,10 +176,22 @@ FocusScope {
   }
 
   property var pages: {
-    'library': 'LibraryPage.qml',
-    'gameDetails': 'DetailsPage.qml',
-    'videoPlayer': 'VideoPlayerPage.qml',
-    'imageViewer': 'ImageViewerPage.qml'
+    'library': {
+      path: 'LibraryPage.qml',
+      showStage: true
+    },
+    'gameDetails': {
+      path: 'DetailsPage.qml',
+      showStage: false
+    },
+    'videoPlayer': {
+      path: 'VideoPlayerPage.qml',
+      showStage: false
+    },
+    'imageViewer': {
+      path: 'ImageViewerPage.qml',
+      showStage: false
+    }
   }
 
   SoundEffect {
@@ -171,6 +239,7 @@ FocusScope {
   Loader {
     id: pageLoader
     focus: true
+    asynchronous: true
     anchors.fill: parent
   }
 

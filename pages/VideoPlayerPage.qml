@@ -13,10 +13,13 @@ Item {
     }
   }
 
+  Rectangle {
+    color: 'black'
+    anchors.fill: parent
+  }
+
   Video {
     id: player
-    width: parent.width
-    height: parent.height
     source: videoPath
     anchors.fill: parent
     autoPlay: true

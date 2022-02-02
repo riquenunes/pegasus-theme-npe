@@ -187,6 +187,7 @@ Item {
 
         Loader {
           id: loader
+          asynchronous: true
           anchors.fill: parent
           anchors.leftMargin: vpx(30)
           anchors.topMargin: vpx(30)
