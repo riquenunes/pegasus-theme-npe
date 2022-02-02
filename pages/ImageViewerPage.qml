@@ -8,8 +8,7 @@ import '../components'
 
 Item {
   property var imagePaths: api.memory.get(memoryKeys.imagePaths)
-  property var isRunning: true
-  property int currentIndex: 0
+  property alias running: viewer.running
 
   focus: true
   Keys.onPressed: {
@@ -17,35 +16,20 @@ Item {
       if (api.keys.isCancel(event)) {
         navigate(pages.gameDetails);
       } else if (api.keys.isAccept(event)) {
-        isRunning = !isRunning;
+        running = !running;
       }
     }
   }
 
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % imagePaths.length;
-    timer.restart();
-  }
 
-  function previousImage() {
-    currentIndex = (currentIndex == 0 ? imagePaths.length : currentIndex) - 1;
-    timer.restart();
-  }
+  Keys.onLeftPressed: viewer.previousImage()
+  Keys.onRightPressed: viewer.nextImage()
 
-  Keys.onLeftPressed: previousImage()
-  Keys.onRightPressed: nextImage()
-
-  Timer {
-    id: timer
-    interval: 5000; running: isRunning; repeat: true
-    onTriggered: nextImage()
-  }
-
-  Image {
-    id: player
+  ImageViewer {
+    id: viewer
     anchors.fill: parent
-    source: imagePaths[currentIndex]
-    fillMode: Image.PreserveAspectFit
+    imagePaths: parent.imagePaths
+    running: true
   }
 
   Item {
@@ -79,14 +63,14 @@ Item {
       font.weight: Font.Black
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      text: `${currentIndex + 1} | ${imagePaths.length}`
+      text: `${viewer.currentIndex + 1} | ${imagePaths.length}`
     }
   }
 
   Component.onCompleted: () => {
     setAvailableActions({
       [actionKeys.bottom]: {
-        label: isRunning ? 'Pause' : 'Resume',
+        label: running ? 'Pause' : 'Resume',
         visible: true,
       },
       [actionKeys.right]: {
@@ -96,10 +80,10 @@ Item {
     });
   }
 
-  onIsRunningChanged: {
+  onRunningChanged: {
     setAvailableActions({
       [actionKeys.bottom]: {
-        label: isRunning ? 'Pause' : 'Resume',
+        label: running ? 'Pause' : 'Resume',
         visible: true,
       },
       [actionKeys.right]: {

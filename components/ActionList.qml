@@ -5,10 +5,6 @@ import QtQml 2.15
 
 ListView {
   id: listView
-  anchors.top: rating.bottom
-  anchors.bottom: parent.bottom
-  anchors.left: parent.left
-  anchors.right: parent.right
 
   property int previousIndex: 0
 
@@ -37,9 +33,9 @@ ListView {
   }
 
   highlight: Item {
-    height: listView.currentItem.height + vpx(5)
+    height: listView.currentItem.height + vpx(1)
     width: listView.currentItem.width + vpx(5)
-    y: listView.currentItem.y - vpx(2.5)
+    y: listView.currentItem.y - vpx(1)
     x: listView.currentItem.x - vpx(2.5)
 
     Rectangle {
@@ -62,6 +58,7 @@ ListView {
       }
       radius: vpx(5)
       anchors.fill: parent
+      opacity: listView.model.get(listView.currentIndex).canExecute() ? 1 : .1
 
       RadialGradient {
         anchors.left: parent.left
@@ -85,9 +82,10 @@ ListView {
     }
 
     Rectangle {
+      id: glowMask
       anchors.fill: parent
       radius: bg.radius
-      visible: bg.visible
+      visible: bg.visible && bg.opacity === 1
       color: 'transparent'
       clip: true
 
@@ -103,10 +101,10 @@ ListView {
         opacity: .2
 
         NumberAnimation on x {
-          running: parent.visible
+          running: glowMask.visible
           from: parent.width
           to: -parent.width - width
-          duration: 4000
+          duration: 8000
           loops: Animation.Infinite
         }
 
@@ -130,20 +128,21 @@ ListView {
   highlightFollowsCurrentItem: false
   delegate: Item {
     width: parent.width
-    height: vpx(45)
-    opacity: canExecute() ? 1 : .3
+    height: vpx(46)
 
     StyledText {
       text: label()
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
       anchors.leftMargin: vpx(6)
-      opacity: parent.ListView.isCurrentItem ? 1 : 0.7
+      opacity: canExecute() && parent.ListView.isCurrentItem ? 1 : .4
+      color: canExecute() ? '#FFF' : '#000'
+      layer.enabled: canExecute()
     }
 
     Rectangle {
       color: '#FFF'
-      opacity: parent.ListView.isCurrentItem ? 0 : .2
+      opacity: .07
       height: vpx(1)
       width: parent.width
       anchors.bottom: parent.bottom

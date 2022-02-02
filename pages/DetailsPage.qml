@@ -28,44 +28,28 @@ Item {
   Component {
     id: quickActionsPanel
 
-    Item {
+    ColumnLayout {
+      spacing: vpx(20)
+
       StyledText {
+        Layout.fillWidth: true
+
         id: gameTitle
         text: currentGame.title
         font.pointSize: vpx(25)
-        anchors.right: parent.right
-        anchors.left: parent.left
         wrapMode: Text.Wrap
       }
 
       Rating {
+        Layout.alignment: Qt.AlignRight
         id: rating
         rating: currentGame.rating
-        anchors.topMargin: vpx(35)
-        anchors.top: gameTitle.bottom
-        anchors.right: parent.right
       }
 
-      ActionList {
-        id: quickActions
-        focus: true
-        model: ListModel {
-          ListElement {
-            label: () => 'Play Now'
-            action: () => currentGame.launch()
-            canExecute: () => true
-          }
-          ListElement {
-            label: () => 'Watch Preview'
-            action: () => navigate(pages.videoPlayer, { [memoryKeys.videoPath]: currentGame.assets.video })
-            canExecute: () => !!currentGame.assets.video
-          }
-          ListElement {
-            label: () => !currentGame.favorite ? 'Pin to Home' : 'Remove Pin'
-            action: () => currentGame.favorite = !currentGame.favorite
-            canExecute: () => true
-          }
-        }
+      GameActions {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        game: currentGame
       }
     }
   }
@@ -74,80 +58,20 @@ Item {
   Component {
     id: imagesPanel
 
-    Item {
+    ColumnLayout {
+      spacing: vpx(20)
+
       StyledText {
+        Layout.fillWidth: true
         id: imagesHeader
         text: 'Images'
         font.weight: Font.Black
       }
 
-      ActionList {
-        id: imageActions
-        anchors.top: imagesHeader.bottom
-        anchors.topMargin: vpx(25)
-        focus: true
-        model: ListModel {
-          ListElement {
-            label: () => 'View Full Screen'
-            action: () => navigate(
-              pages.imageViewer,
-              {
-                [memoryKeys.imagePaths]: [
-                  ...currentGame.assets.screenshotList,
-                  ...currentGame.assets.titlescreenList,
-                  ...currentGame.assets.bannerList
-                ]
-              }
-            )
-            canExecute: () => true
-          }
-        }
-        delegate: Column {
-          anchors.left: parent.left
-          anchors.right: parent.right
-          anchors.top: parent.top
-          spacing: vpx(16)
-
-          Item {
-            height: 1
-            anchors.left: parent.left
-            anchors.right: parent.right
-          }
-
-          Image {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            fillMode: Image.PreserveAspectFit
-
-            anchors.leftMargin: vpx(16)
-            anchors.rightMargin: vpx(16)
-            source: currentGame.assets.screenshot
-              || currentGame.assets.titlescreen
-              || currentGame.assets.banner
-          }
-
-          StyledText {
-            text: label()
-            font.weight: Font.Black
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: vpx(16)
-            anchors.rightMargin: vpx(16)
-            anchors.bottomMargin: vpx(16)
-          }
-
-          Item {
-            height: 1
-            anchors.left: parent.left
-            anchors.right: parent.right
-          }
-
-          Keys.onPressed: {
-            if (api.keys.isAccept(event) && canExecute() && !event.isAutoRepeat) {
-              action();
-            }
-          }
-        }
+      GameImageViewer {
+        game: currentGame
+        Layout.fillWidth: true
+        Layout.fillHeight: true
       }
     }
   }
@@ -156,7 +80,8 @@ Item {
   Component {
     id: detailsPanel
 
-    Item {
+    ColumnLayout {
+      spacing: vpx(20)
       focus: true
 
       onActiveFocusChanged: {
@@ -171,94 +96,15 @@ Item {
       }
 
       StyledText {
-        id: detailsHeader
+        Layout.fillWidth: true
         text: 'Details'
         font.weight: Font.Black
       }
 
-      RowLayout {
-        spacing: vpx(25)
-        anchors.topMargin: vpx(25)
-        anchors.top: detailsHeader.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        Image {
-          Layout.maximumWidth: vpx(156)
-          Layout.alignment: Qt.AlignTop
-          width: vpx(156)
-          source: currentGame.assets.poster || currentGame.assets.boxFront || currentGame.assets.logo
-          asynchronous: true
-          cache: true
-          fillMode: Image.PreserveAspectFit
-          verticalAlignment: Image.AlignTop
-        }
-
-        ColumnLayout {
-          Layout.fillWidth: true
-          Layout.alignment: Qt.AlignTop
-
-          spacing: vpx(12)
-
-          ColumnLayout {
-            Layout.fillWidth: true
-
-            StyledText {
-              text: 'Platform'
-              font.weight: Font.Black
-            }
-
-            StyledText {
-              Layout.fillWidth: true
-
-              text: currentGame.collections.get(0).name
-              font.weight: Font.Black
-              color: '#80FFFFFF'
-              layer.enabled: false
-              wrapMode: Text.Wrap
-            }
-          }
-
-          ColumnLayout {
-            Layout.fillWidth: true
-
-            StyledText {
-              text: 'Developer'
-              font.weight: Font.Black
-            }
-
-            StyledText {
-              Layout.fillWidth: true
-
-              text: currentGame.developer
-              font.weight: Font.Black
-              color: '#80FFFFFF'
-              layer.enabled: false
-              wrapMode: Text.Wrap
-            }
-          }
-
-          ColumnLayout {
-            Layout.fillWidth: true
-
-            StyledText {
-              text: 'Publisher'
-              font.weight: Font.Black
-              anchors.topMargin: vpx(25)
-            }
-
-            StyledText {
-              Layout.fillWidth: true
-
-              text: currentGame.publisher
-              font.weight: Font.Black
-              color: '#80FFFFFF'
-              layer.enabled: false
-              wrapMode: Text.Wrap
-            }
-          }
-        }
+      GameDetails {
+        Layout.alignment: Qt.AlignTop
+        Layout.fillWidth: true
+        game: currentGame
       }
     }
   }
@@ -267,67 +113,31 @@ Item {
   Component {
     id: descriptionPanel
 
-    Item {
+    ColumnLayout {
+      spacing: vpx(20)
+
       StyledText {
+        Layout.fillWidth: true
+
         id: aboutHeader
         text: 'Description'
         font.weight: Font.Black
       }
 
-      Flickable {
-        id: descriptionFlickable
-        focus: true
-        anchors.topMargin: vpx(25)
-        anchors.bottomMargin: vpx(25)
-        anchors.top: aboutHeader.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        contentHeight: descriptionText.height
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
-        Keys.onUpPressed:   flick(0,  800)
-        Keys.onDownPressed: flick(0, -800)
+      Scrollable {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
+        contentHeight: descriptionText.contentHeight
 
         StyledText {
           id: descriptionText
-          anchors.left: parent.left
-          anchors.right: parent.right
           wrapMode: Text.WordWrap
+          anchors.fill: parent
           text: currentGame.description || currentGame.summary
           textFormat: Text.StyledText
           color: '#80FFFFFF'
           layer.enabled: false
-        }
-
-        onActiveFocusChanged: {
-          if (activeFocus) {
-            setAvailableActions({
-              [actionKeys.right]: {
-                label: 'Back',
-                visible: true
-              }
-            });
-          }
-        }
-      }
-
-      Row {
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-
-        Image {
-          source: descriptionFlickable.verticalVelocity < 0
-            ? '../assets/images/icons/up-focus.png'
-            : '../assets/images/icons/up-default.png'
-          opacity: descriptionFlickable.atYBeginning ? 0 : 1
-        }
-
-        Image {
-          source: descriptionFlickable.verticalVelocity > 0
-            ? '../assets/images/icons/down-focus.png'
-            : '../assets/images/icons/down-default.png'
-          opacity: descriptionFlickable.atYEnd ? 0 : 1
         }
       }
     }
@@ -335,8 +145,8 @@ Item {
 
   PanelsList {
     id: panelsList
-    panelWidth: vpx(450)
-    panelHeight: vpx(480)
+    panelWidth: vpx(458)
+    panelHeight: vpx(494)
     model: ListModel {
       ListElement {
         type: 'quick-actions'
@@ -378,10 +188,10 @@ Item {
         Loader {
           id: loader
           anchors.fill: parent
-          anchors.leftMargin: vpx(25)
-          anchors.topMargin: vpx(25)
-          anchors.rightMargin: vpx(25)
-          anchors.bottomMargin: vpx(25)
+          anchors.leftMargin: vpx(30)
+          anchors.topMargin: vpx(30)
+          anchors.rightMargin: vpx(30)
+          anchors.bottomMargin: vpx(30)
           sourceComponent: component()
         }
 
