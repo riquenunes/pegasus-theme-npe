@@ -115,32 +115,47 @@ Item {
     indexPersistenceKey: memoryKeys.libraryPanelIndex
 
     delegate: PanelWrapper {
+      property var posterBackground: style === panelStyle.cover ? assets.poster : undefined
+      property var backgroundSource: posterBackground || assets.steam || assets.background || assets.banner
+
       Image {
         id: background
         height: parent.height
         width: parent.width
         sourceSize.width: width
         sourceSize.height: height
-        source: assets.poster || assets.background || assets.screenshot || '../assets/images/panels/2.jpg'
+        source: backgroundSource
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         cache: true
-        layer.enabled: !assets.poster
-          && (assets.background || assets.screenshot)
-          && assets.logo
-        layer.effect: FastBlur {
-          anchors.fill: background
-          source: background
-          radius: 48
-          cached: true
-        }
+      }
+
+      Image {
+        id: fallbackBackground
+        fillMode: Image.PreserveAspectCrop
+        anchors.fill: background
+        source: `../assets/images/contenttabs/green/backgrounds/${index % 8 + 1}.png`
+        visible: background.status != Image.Ready
+      }
+      
+      Image {
+        id: genericIcon
+        fillMode: Image.PreserveAspectFit
+        source: `../assets/images/contenttabs/green/icons/controller.png`
+        visible: fallbackBackground.visible
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        height: vpx(200)
+        sourceSize.height: height
+
       }
 
       Item {
         id: genericPanelOverlay
         width: parent.width
         height: parent.height
-        visible: style === panelStyle.generic
+        visible: genericIcon.visible || style === panelStyle.generic
 
         LinearGradient {
           anchors.fill: parent
@@ -155,16 +170,17 @@ Item {
         StyledText {
           font.pointSize: vpx(20)
           text: title
-          anchors.bottom: parent.bottom
+          anchors.bottom: summaryText.top
           anchors.left: parent.left
           anchors.right: parent.right
           anchors.leftMargin: vpx(18)
-          anchors.bottomMargin: vpx(43)
           anchors.rightMargin: vpx(18)
+          anchors.bottomMargin: vpx(4)
           elide: Text.ElideRight
         }
 
         StyledText {
+          id: summaryText
           font.pointSize: vpx(16)
           text: summary
           anchors.bottom: parent.bottom
@@ -173,33 +189,12 @@ Item {
           anchors.leftMargin: vpx(18)
           anchors.rightMargin: vpx(18)
           anchors.bottomMargin: vpx(15)
+          anchors.topMargin: vpx(20)
           opacity: .8
           elide: Text.ElideRight
           visible: !truncated
+          maximumLineCount: 1
         }
-      }
-
-      Image {
-        id: logo
-        source: assets.logo
-        fillMode: Image.PreserveAspectFit
-        asynchronous: true
-        cache: true
-        anchors.leftMargin: vpx(20)
-        anchors.rightMargin: vpx(20)
-        height: vpx(160)
-        sourceSize.height: height
-        visible: assets.logo && !assets.poster
-
-        // Cover panel specific options
-        anchors.left: !genericPanelOverlay.visible ? parent.left : undefined
-        anchors.right: !genericPanelOverlay.visible ? parent.right : undefined
-        anchors.verticalCenter: !genericPanelOverlay.visible ? parent.verticalCenter : undefined
-
-        // Generic panel specific options
-        anchors.horizontalCenter: genericPanelOverlay.visible ? parent.horizontalCenter : undefined
-        anchors.top: genericPanelOverlay.visible ? parent.top : undefined
-        anchors.topMargin: genericPanelOverlay.visible ? vpx(52) : undefined
       }
     }
   }
@@ -228,7 +223,7 @@ Item {
         visible: true
       },
       [actionKeys.left]: {
-        label: 'Game details',
+        label: 'Game Details',
         visible: true
       }
     });

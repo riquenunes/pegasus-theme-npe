@@ -108,12 +108,17 @@ FocusScope {
 
   property var panelStyle: {
     'cover': 'cover',
-    'generic': 'generic'
+    'generic': 'generic',
+    'steam': 'steam'
   }
 
   function getChannelsPanelStyle(channelItems) {
-    if (channelItems.toVarArray().some(g => g.assets.poster)) {
+    const channelItemsArray = channelItems.toVarArray();
+
+    if (channelItemsArray.some(g => g.assets.poster)) {
       return panelStyle.cover;
+    } else if (channelItemsArray.some(g => g.assets.steam)) {
+      return panelStyle.steam;
     }
 
     return panelStyle.generic;
@@ -128,6 +133,10 @@ FocusScope {
       [panelStyle.generic]: {
         width: vpx(420),
         height: vpx(320)
+      },
+      [panelStyle.steam]: {
+        width: vpx(460),
+        height: vpx(215)
       }
     }
 

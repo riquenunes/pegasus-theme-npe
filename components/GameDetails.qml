@@ -18,6 +18,8 @@ RowLayout {
     cache: true
     fillMode: Image.PreserveAspectFit
     verticalAlignment: Image.AlignTop
+    sourceSize.height: height
+    sourceSize.width: width
   }
 
   ColumnLayout {
