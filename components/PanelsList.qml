@@ -8,6 +8,7 @@ PathView {
   id: panelsList
   interactive: false
   height: panelHeight
+  highlightMoveDuration: 400
   pathItemCount: model.count < 14
     ? model.count
     : 14

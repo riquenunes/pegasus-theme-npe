@@ -117,6 +117,7 @@ Item {
     delegate: PanelWrapper {
       property var posterBackground: style === panelStyle.cover ? assets.poster : undefined
       property var backgroundSource: posterBackground || assets.steam || assets.background || assets.banner
+      property var isCurrentItem: PathView.isCurrentItem
 
       Image {
         id: background
@@ -137,25 +138,53 @@ Item {
         source: `../assets/images/contenttabs/green/backgrounds/${index % 8 + 1}.png`
         visible: background.status != Image.Ready
       }
+
+      onIsCurrentItemChanged: {
+        if (isCurrentItem && icon.visible) {
+          iconAnimation.start();
+        }
+      }
+
+      SequentialAnimation {
+        id: iconAnimation
+        PauseAnimation {
+          duration: 400
+        }
+        NumberAnimation {
+          target: icon
+          property: 'scale'
+          to: 1.4
+          duration: 100
+        }
+        NumberAnimation {
+          target: icon
+          property: 'scale'
+          to: 1
+          duration: 100
+        }
+      }
       
       Image {
-        id: genericIcon
+        id: icon
         fillMode: Image.PreserveAspectFit
-        source: `../assets/images/contenttabs/green/icons/controller.png`
-        visible: fallbackBackground.visible
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        height: vpx(200)
+        source: assets.logo || '../assets/images/contenttabs/green/icons/controller.png'
+        visible: fallbackBackground.visible && background.status !== Image.Loading
+        asynchronous: true
+        cache: true
+        anchors.fill: parent
+        anchors.leftMargin: vpx(30)
+        anchors.rightMargin: vpx(30)
+        anchors.bottomMargin: vpx(30)
+        anchors.topMargin: vpx(30)
+        sourceSize.width: width
         sourceSize.height: height
-
       }
 
       Item {
         id: genericPanelOverlay
         width: parent.width
         height: parent.height
-        visible: genericIcon.visible || style === panelStyle.generic
+        visible: icon.visible || style === panelStyle.generic
 
         LinearGradient {
           anchors.fill: parent
@@ -163,7 +192,7 @@ Item {
           end: Qt.point(0, parent.height)
           gradient: Gradient {
             GradientStop { position: .64; color: '#00000000' }
-            GradientStop { position: 1; color: '#FF000000' }
+            GradientStop { position: 1; color: '#DD000000' }
           }
         }
 
