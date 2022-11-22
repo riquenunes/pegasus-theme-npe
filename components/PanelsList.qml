@@ -26,6 +26,12 @@ PathView {
     if (interactive) decrementCurrentIndex();
   }
 
+  onModelChanged: {
+    if (model.count > 1) {
+      panelUnfoldSound.play();
+    }
+  }
+
   onCurrentItemChanged: {
     if (currentIndex !== previousIndex) {
       if (currentIndex > previousIndex) panelRightSound.play();

@@ -228,6 +228,12 @@ FocusScope {
   }
 
   SoundEffect {
+    id: panelUnfoldSound
+    source: 'assets/audio/panel-unfold.wav'
+    volume: .01
+  }
+
+  SoundEffect {
     id: selectSound
     source: 'assets/audio/select.wav'
     volume: .5
