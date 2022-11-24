@@ -9,9 +9,7 @@ PathView {
   interactive: false
   height: panelHeight
   highlightMoveDuration: 400
-  pathItemCount: model.count < 14
-    ? model.count
-    : 14
+  pathItemCount: model.count
 
   property int previousIndex: 0
   property real panelWidth
