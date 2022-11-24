@@ -10,6 +10,7 @@ PathView {
   height: panelHeight + panelReflectionSize
   highlightMoveDuration: 400
   pathItemCount: model.count
+  movementDirection: PathView.Positive
 
   property var lastChild: children[children.length - 1]
   property int previousIndex: 0
@@ -72,7 +73,7 @@ PathView {
     delay(() => {
       currentIndex = api.memory.get(indexPersistenceKey);
       interactive = true;
-    }, 50 * pathItemCount);
+    }, 80 * (pathItemCount > 14 ? 14 : pathItemCount));
   }
 
   function generatePath() {
