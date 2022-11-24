@@ -7,10 +7,11 @@ import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
 PathView {
   id: panelsList
   interactive: false
-  height: panelHeight
+  height: panelHeight + panelReflectionSize
   highlightMoveDuration: 400
   pathItemCount: model.count
 
+  property var lastChild: children[children.length - 1]
   property int previousIndex: 0
   property real panelWidth
   property real panelHeight
@@ -18,19 +19,27 @@ PathView {
   property var indexPersistenceKey
 
   function nextItem() {
-    if (interactive) incrementCurrentIndex();
+    if (interactive && currentIndex < model.count - 1) incrementCurrentIndex();
   }
 
   function previousItem() {
-    if (interactive) decrementCurrentIndex();
+    if (interactive && currentIndex > 0) decrementCurrentIndex();
   }
 
   function navigateForwardQuickly() {
-    if (interactive) currentIndex += 5;
+    if (interactive) {
+      for(let i = 0; i < 5; i++) {
+        nextItem();
+      }
+    }
   }
 
   function navigateBackwardsQuickly() {
-    if (interactive) currentIndex -= 5;
+    if (interactive) {
+      for(let i = 0; i < 5; i++) {
+        previousItem();
+      }
+    }
   }
 
   onModelChanged: {
@@ -48,6 +57,14 @@ PathView {
     }
 
     previousIndex = currentIndex;
+  }
+
+  Connections {
+    target: lastChild
+
+    function onXChanged() {
+       maskContent.width = lastChild.x + lastChild.width * lastChild.scale
+    }
   }
 
   onPathChanged: {
@@ -116,6 +133,29 @@ PathView {
       );
 
     return path;
+  }
+
+  Item {
+    id: mask
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    height: root.height
+    visible: false
+
+    Rectangle {
+      id: maskContent
+      anchors.left: parent.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      width: vpx(400)
+      color: "#FFFFFFFF"
+    }
+  }
+
+  layer.enabled: true
+  layer.effect: OpacityMask {
+    maskSource: mask
   }
 
   path: generatePath();

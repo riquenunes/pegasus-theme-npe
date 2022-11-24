@@ -172,6 +172,7 @@ Item {
     }
     anchors.verticalCenter: parent.verticalCenter
     anchors.left: parent.left
+    anchors.right: parent.right
     anchors.leftMargin: vpx(67)
     indexPersistenceKey: memoryKeys.gameDetailsPanelIndex
     delegate: PanelWrapper {

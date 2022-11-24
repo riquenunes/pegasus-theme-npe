@@ -235,7 +235,7 @@ Item {
   StyledText {
     text: `${gamesList.currentIndex + 1} of ${currentPlatform.games.count}  |  ${currentGame.title}`
     anchors.top: gamesList.bottom
-    anchors.topMargin: vpx(9)
+    anchors.topMargin: vpx(9) - panelReflectionSize
     anchors.left: parent.left
     anchors.leftMargin: vpx(96)
     font.pointSize: vpx(15)

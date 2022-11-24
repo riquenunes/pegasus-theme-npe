@@ -72,15 +72,24 @@ FocusScope {
     }
   }
 
-  Rectangle {
+  Item {
     id: reflection
     width: content.width
     height: content.height
     anchors.top: content.bottom
     anchors.horizontalCenter: parent.horizontalCenter
-    gradient: Gradient {
-      GradientStop { position: 0; color: Qt.rgba(1,1,1,0.1) }
-      GradientStop { position: 0.4; color: Qt.rgba(1,1,1,0) }
+
+    Rectangle {
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: panelReflectionSize
+      radius: vpx(7)
+
+      gradient: Gradient {
+        GradientStop { position: 0; color: Qt.rgba(1,1,1,.2) }
+        GradientStop { position: 1; color: Qt.rgba(1,1,1,0) }
+      }
     }
   }
 

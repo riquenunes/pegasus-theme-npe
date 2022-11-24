@@ -70,6 +70,8 @@ FocusScope {
     ]
   }
 
+  property var panelReflectionSize: vpx(50)
+
   property var actionKeys: {
     'bottom': 'a',
     'right': 'b',
@@ -100,7 +102,6 @@ FocusScope {
 
     availableActions = newActions;
   }
-
 
   function vpx(size) {
     return Math.round(size * (Screen.height / 720))
