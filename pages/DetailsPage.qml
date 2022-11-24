@@ -217,9 +217,15 @@ Item {
   }
 
   Keys.onPressed: {
-    if (!event.isAutoRepeat && api.keys.isCancel(event)) {
-      api.memory.set(memoryKeys.gameDetailsPanelIndex, 0);
-      navigate(pages.library);
+    if (!event.isAutoRepeat) {
+      if (api.keys.isCancel(event)) {
+        api.memory.set(memoryKeys.gameDetailsPanelIndex, 0);
+        navigate(pages.library);
+      } else if (api.keys.isNextPage(event)) {
+        panelsList.navigateForwardQuickly();
+      } else if (api.keys.isPrevPage(event)) {
+        panelsList.navigateBackwardsQuickly();
+      }
     }
   }
 }
