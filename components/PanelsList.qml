@@ -25,6 +25,14 @@ PathView {
     if (interactive) decrementCurrentIndex();
   }
 
+  function navigateForwardQuickly() {
+    if (interactive) currentIndex += 5;
+  }
+
+  function navigateBackwardsQuickly() {
+    if (interactive) currentIndex -= 5;
+  }
+
   onModelChanged: {
     if (model.count > 1) {
       panelUnfoldSound.play();

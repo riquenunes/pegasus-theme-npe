@@ -21,8 +21,13 @@ Item {
     anchors.fill: parent
   }
 
-  Keys.onLeftPressed: panelsList.decrementCurrentIndex()
-  Keys.onRightPressed: panelsList.incrementCurrentIndex()
+  Keys.onLeftPressed: {
+    if (!event.isAutoRepeat) panelsList.previousItem()
+  }
+
+  Keys.onRightPressed: {
+    if (!event.isAutoRepeat) panelsList.nextItem()
+  }
 
   // quick actions panel
   Component {

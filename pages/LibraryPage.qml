@@ -57,6 +57,10 @@ Item {
     if (!event.isAutoRepeat) {
       if (api.keys.isAccept(event)) {
         currentGame.launch();
+      } else if (api.keys.isNextPage(event)) {
+        gamesList.navigateForwardQuickly();
+      } else if (api.keys.isPrevPage(event)) {
+        gamesList.navigateBackwardsQuickly();
       } else if (api.keys.isDetails(event)) {
         stage.state = 'Invisible';
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
