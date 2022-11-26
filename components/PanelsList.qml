@@ -10,14 +10,16 @@ PathView {
   height: panelHeight + panelReflectionSize
   highlightMoveDuration: 400
   pathItemCount: model.count
+  cacheItemCount: pathItemCount + 2
   movementDirection: PathView.Positive
 
   property var lastChild: children[children.length - 1]
   property int previousIndex: 0
-  property real panelWidth
-  property real panelHeight
+  property real panelWidth: vpx(XboxDashboardParameters.panelStyles[contentType].width)
+  property real panelHeight: vpx(XboxDashboardParameters.panelStyles[contentType].height)
   property var panelContent
   property var indexPersistenceKey
+  property var contentType
 
   function nextItem() {
     if (interactive && currentIndex < model.count - 1) incrementCurrentIndex();
@@ -60,14 +62,6 @@ PathView {
     previousIndex = currentIndex;
   }
 
-  Connections {
-    target: lastChild
-
-    function onXChanged() {
-       maskContent.width = lastChild.x + lastChild.width * lastChild.scale
-    }
-  }
-
   onPathChanged: {
     interactive = false;
     delay(() => {
@@ -78,16 +72,19 @@ PathView {
 
   function generatePath() {
     const startingItemX = panelWidth / 2;
-    const getScale = screenIndex => XboxDashboardParameters.panelScaleByScreenIndex[screenIndex];
-    const getOffsetY = screenIndex => vpx(XboxDashboardParameters.panelYOffsetByScreenIndex[screenIndex]);
-    const getX = (screenIndex) => {
+    const panelStyle = XboxDashboardParameters.panelStyles[contentType];
+    const getScale = panelStyle.getScale;
+    const getXOffset = screenIndex => vpx(panelStyle.getXOffset(screenIndex), false);
+    const getYOffset = screenIndex => vpx(panelStyle.getYOffset(screenIndex), false);
+    const getX = (screenIndex, previousParameters) => {
       if (screenIndex === 0) return startingItemX;
 
-      const currentWidth = panelWidth * getScale(screenIndex);
-      const previousWidth = panelWidth * getScale(screenIndex - 1);
-      const previousX = getX(screenIndex - 1);
+      const previousWidth = panelWidth * previousParameters.scale;
+      const previousX = previousParameters.x;
+      const previousRight = previousX + previousWidth;
+      const xOffset = getXOffset(screenIndex)
 
-      return previousWidth + previousX + vpx(XboxDashboardParameters.panelXOffsetByScreenIndex[screenIndex]);
+      return previousRight + xOffset;
     }
 
     const itemsCount = panelsList.pathItemCount
@@ -107,17 +104,21 @@ PathView {
     }
 
     path.pathElements = [...Array(itemsCount + 1).keys()]
-      .reduce((acc, i) => ([
-        ...acc,
-        {
-          x: getX(i),
-          y: 0,
-          scale: getScale(i),
-          yOffset: getOffsetY(i),
-          screenIndex: i,
-          percent: 1 / itemsCount * i
-        }
-      ]), [])
+      .reduce((acc, screenIndex) => {
+        const x = getX(screenIndex, acc[screenIndex-1]);
+
+        return [
+          ...acc,
+          {
+            x,
+            y: 0,
+            scale: getScale(screenIndex),
+            yOffset: getYOffset(screenIndex),
+            screenIndex,
+            percent: 1 / itemsCount * screenIndex
+          }
+        ]
+      }, [])
       .reduce(
         (acc, currentSegmentParameters, index, allParameters) => {
           const previousIndex = index - 1;
@@ -149,7 +150,7 @@ PathView {
       anchors.left: parent.left
       anchors.top: parent.top
       anchors.bottom: parent.bottom
-      width: vpx(400)
+      width: lastChild.x + lastChild.width * lastChild.scale
       color: "#FFFFFFFF"
     }
   }

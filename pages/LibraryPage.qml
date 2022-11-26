@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
 import '../components'
+import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
 
 Item {
   focus: true
@@ -30,8 +31,6 @@ Item {
 
   property var currentPlatform: api.collections.get(platformsList.currentIndex)
   property var currentGame: currentPlatform.games.get(gamesList.currentIndex)
-  property var style: getChannelsPanelStyle(currentPlatform.games)
-  property var panelDimensions: getChannelsPanelDimensions(currentPlatform.games, style)
 
   Keys.onUpPressed: {
     if (!event.isAutoRepeat) {
@@ -46,11 +45,11 @@ Item {
   }
 
   Keys.onLeftPressed: {
-    if (!event.isAutoRepeat) gamesList.previousItem()
+    gamesList.previousItem()
   }
 
   Keys.onRightPressed: {
-    if (!event.isAutoRepeat) gamesList.nextItem()
+     gamesList.nextItem()
   }
 
   Keys.onPressed: {
@@ -62,7 +61,6 @@ Item {
       } else if (api.keys.isPrevPage(event)) {
         gamesList.navigateBackwardsQuickly();
       } else if (api.keys.isDetails(event)) {
-        stage.state = 'Invisible';
         navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
       }
     }
@@ -108,8 +106,6 @@ Item {
 
   PanelsList {
     id: gamesList
-    panelWidth: panelDimensions.width
-    panelHeight: panelDimensions.height
     model: currentPlatform.games
     anchors.top: platformsList.bottom
     anchors.left: platformsList.left
@@ -117,9 +113,10 @@ Item {
     anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
     indexPersistenceKey: memoryKeys.libraryPanelIndex
-
+    contentType: XboxDashboardParameters.getIdealContentType(currentPlatform.games)
     delegate: PanelWrapper {
-      property var posterBackground: style === panelStyle.cover ? assets.poster : undefined
+      property var contentType: parent.contentType
+      property var posterBackground: contentType === XboxDashboardParameters.PanelContentTypes.GameCover ? assets.poster : undefined
       property var backgroundSource: posterBackground || assets.steam || assets.background || assets.banner
       property var isCurrentItem: PathView.isCurrentItem
 
@@ -141,6 +138,7 @@ Item {
         anchors.fill: background
         source: `../assets/images/contenttabs/green/backgrounds/${index % 8 + 1}.png`
         visible: background.status != Image.Ready
+        cache: true
       }
 
       onIsCurrentItemChanged: {
@@ -188,7 +186,7 @@ Item {
         id: genericPanelOverlay
         width: parent.width
         height: parent.height
-        visible: icon.visible || style === panelStyle.generic
+        visible: icon.visible || contentType === XboxDashboardParameters.PanelContentTypes.GameGeneric
 
         LinearGradient {
           anchors.fill: parent
@@ -233,7 +231,8 @@ Item {
   }
 
   StyledText {
-    text: `${gamesList.currentIndex + 1} of ${currentPlatform.games.count}  |  ${currentGame.title}`
+    text: currentGame && `${gamesList.currentIndex + 1} of ${currentPlatform.games.count}  |  ${currentGame.title}`
+    visible: currentGame
     anchors.top: gamesList.bottom
     anchors.topMargin: vpx(9) - panelReflectionSize
     anchors.left: parent.left

@@ -3,6 +3,7 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
+import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
 
 import '../components'
 
@@ -150,8 +151,7 @@ Item {
 
   PanelsList {
     id: panelsList
-    panelWidth: vpx(458)
-    panelHeight: vpx(494)
+    contentType: XboxDashboardParameters.PanelContentTypes.Content
     model: ListModel {
       ListElement {
         type: 'quick-actions'

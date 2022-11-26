@@ -103,45 +103,19 @@ FocusScope {
     availableActions = newActions;
   }
 
-  function vpx(size) {
-    return Math.round(size * (Screen.height / 720))
+  function vpx(size, round = true) {
+    const result = size * (Screen.height / 720);
+    if (round) {
+      return Math.round(result);
+    }
+
+    return result;
   }
 
   property var panelStyle: {
     'cover': 'cover',
     'generic': 'generic',
     'steam': 'steam'
-  }
-
-  function getChannelsPanelStyle(channelItems) {
-    const channelItemsArray = channelItems.toVarArray();
-
-    if (channelItemsArray.some(g => g.assets.poster)) {
-      return panelStyle.cover;
-    } else if (channelItemsArray.some(g => g.assets.steam)) {
-      return panelStyle.steam;
-    }
-
-    return panelStyle.generic;
-  }
-
-  function getChannelsPanelDimensions(channelItems, style) {
-    const map = {
-      [panelStyle.cover]: {
-        width: vpx(234),
-        height: vpx(320)
-      },
-      [panelStyle.generic]: {
-        width: vpx(420),
-        height: vpx(320)
-      },
-      [panelStyle.steam]: {
-        width: vpx(460),
-        height: vpx(215)
-      }
-    }
-
-    return map[style];
   }
 
   function delay(cb, delayTime) {
