@@ -11,7 +11,7 @@ export const panelStyles = {
         height: 196,
         getScale: position => [1, 0.74375, 0.59375, 0.49375, 0.421875, 0.36875][position] ?? 0.34,
         getXOffset: position => [0, -1, -65, -85, -91, -94, -95, -96, -96, -95, -94, -94][position] ?? -93,
-        getYOffset: position => [0, -7, -11, -14, -16, -17][position] ?? -17,
+        getYOffset: position => [0, 7, 11, 14, 16, 17][position] ?? 17,
     },
     [PanelContentTypes.GameGeneric]: {
         width: 420,
