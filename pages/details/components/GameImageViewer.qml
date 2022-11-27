@@ -3,17 +3,20 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
+import "../../../js/enums.mjs" as Enums
+
+import "../../../components"
 
 ActionList {
   property var game
   focus: true
   model: ListModel {
     ListElement {
-      label: () => 'View Full Screen'
+      label: () => "View Full Screen"
       action: () => navigate(
         pages.imageViewer,
         {
-          [memoryKeys.imagePaths]: [
+          [Enums.MemoryKeys.ImagePaths]: [
             ...game.assets.screenshotList,
             ...game.assets.titlescreenList,
             ...game.assets.bannerList
@@ -48,18 +51,6 @@ ActionList {
         ...game.assets.bannerList
       ]
     }
-
-    // Image {
-    //   anchors.left: parent.left
-    //   anchors.right: parent.right
-    //   fillMode: Image.PreserveAspectFit
-
-    //   anchors.leftMargin: vpx(16)
-    //   anchors.rightMargin: vpx(16)
-    //   source: game.assets.screenshot
-    //     || game.assets.titlescreen
-    //     || game.assets.banner
-    // }
 
     StyledText {
       text: label()

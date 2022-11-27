@@ -1,8 +1,9 @@
 import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
-import '../components'
-import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
+import "../../components"
+import "../../js/styling.mjs" as Styling
+import "../../js/enums.mjs" as Enums
 
 Item {
   focus: true
@@ -61,7 +62,7 @@ Item {
       } else if (api.keys.isPrevPage(event)) {
         gamesList.navigateBackwardsQuickly();
       } else if (api.keys.isDetails(event)) {
-        navigate(pages.gameDetails, { [memoryKeys.currentGame]: currentGame });
+        navigate(pages.gameDetails, { [Enums.MemoryKeys.CurrentGame]: currentGame });
       }
     }
   }
@@ -79,13 +80,22 @@ Item {
     pathItemCount: 5
     property int previousIndex: 0
 
+    preferredHighlightBegin: height - vpx(60)
+    preferredHighlightEnd: height - vpx(30)
+
     path: Path {
       startX: 0; startY: platformsList.height - 21
-      PathAttribute { name: 'itemScale'; value: 1 }
-      PathAttribute { name: 'itemOpacity'; value: 1 }
+      PathAttribute { name: "itemScale"; value: 1 }
+      PathAttribute { name: "itemOpacity"; value: 1 }
+
+      PathLine { x: 0; y: vpx(30) }
+      PathAttribute { name: "itemScale"; value: 0.39 }
+      PathAttribute { name: "itemOpacity"; value: 0.2 }
+
+
       PathLine { x: 0; y: 0 }
-      PathAttribute { name: 'itemScale'; value: 0.39 }
-      PathAttribute { name: 'itemOpacity'; value: 0.2 }
+      PathAttribute { name: "itemScale"; value: 0 }
+      PathAttribute { name: "itemOpacity"; value: 0 }
     }
 
     onCurrentItemChanged: {
@@ -93,14 +103,14 @@ Item {
         if (currentIndex > previousIndex) channelUpSound.play();
         if (currentIndex < previousIndex) channelDownSound.play();
 
-        api.memory.set(memoryKeys.libraryChannelIndex, currentIndex);
+        api.memory.set(Enums.MemoryKeys.LibraryChannelIndex, currentIndex);
       }
 
       previousIndex = currentIndex;
     }
 
     Component.onCompleted: {
-      platformsList.currentIndex = api.memory.get(memoryKeys.libraryChannelIndex) || 0;
+      platformsList.currentIndex = api.memory.get(Enums.MemoryKeys.LibraryChannelIndex) || 0;
     }
   }
 
@@ -112,11 +122,11 @@ Item {
     anchors.right: parent.right
     anchors.leftMargin: vpx(3)
     anchors.topMargin: vpx(24)
-    indexPersistenceKey: memoryKeys.libraryPanelIndex
-    contentType: XboxDashboardParameters.getIdealContentType(currentPlatform.games)
+    indexPersistenceKey: Enums.MemoryKeys.LibraryPanelIndex
+    contentType: Styling.getIdealContentType(currentPlatform.games)
     delegate: PanelWrapper {
       property var contentType: parent.contentType
-      property var posterBackground: contentType === XboxDashboardParameters.PanelContentTypes.GameCover ? assets.poster : undefined
+      property var posterBackground: contentType === Enums.PanelContentTypes.GameCover ? (assets.boxFront || assets.poster) : undefined
       property var backgroundSource: posterBackground || assets.steam || assets.background || assets.banner
       property var isCurrentItem: PathView.isCurrentItem
 
@@ -136,7 +146,7 @@ Item {
         id: fallbackBackground
         fillMode: Image.PreserveAspectCrop
         anchors.fill: background
-        source: `../assets/images/contenttabs/green/backgrounds/${index % 8 + 1}.png`
+        source: `../../assets/images/contenttabs/green/backgrounds/${index % 8 + 1}.png`
         visible: background.status != Image.Ready
         cache: true
       }
@@ -154,22 +164,22 @@ Item {
         }
         NumberAnimation {
           target: icon
-          property: 'scale'
+          property: "scale"
           to: 1.4
           duration: 100
         }
         NumberAnimation {
           target: icon
-          property: 'scale'
+          property: "scale"
           to: 1
           duration: 100
         }
       }
-      
+
       Image {
         id: icon
         fillMode: Image.PreserveAspectFit
-        source: assets.logo || '../assets/images/contenttabs/green/icons/controller.png'
+        source: assets.logo || "../../assets/images/contenttabs/green/icons/controller.png"
         visible: fallbackBackground.visible && background.status !== Image.Loading
         asynchronous: true
         cache: true
@@ -186,15 +196,15 @@ Item {
         id: genericPanelOverlay
         width: parent.width
         height: parent.height
-        visible: icon.visible || contentType === XboxDashboardParameters.PanelContentTypes.GameGeneric
+        visible: icon.visible || contentType === Enums.PanelContentTypes.GameGeneric
 
         LinearGradient {
           anchors.fill: parent
           start: Qt.point(0, 0)
           end: Qt.point(0, parent.height)
           gradient: Gradient {
-            GradientStop { position: .64; color: '#00000000' }
-            GradientStop { position: 1; color: '#DD000000' }
+            GradientStop { position: .64; color: "#00000000" }
+            GradientStop { position: 1; color: "#DD000000" }
           }
         }
 
@@ -234,15 +244,15 @@ Item {
     text: currentGame && `${gamesList.currentIndex + 1} of ${currentPlatform.games.count}  |  ${currentGame.title}`
     visible: currentGame
     anchors.top: gamesList.bottom
-    anchors.topMargin: vpx(9) - panelReflectionSize
+    anchors.topMargin: vpx(9) - vpx(Styling.panelReflectionSize)
     anchors.left: parent.left
     anchors.leftMargin: vpx(96)
     font.pointSize: vpx(15)
-    color: '#616161'
+    color: "#616161"
     layer.effect: DropShadow {
       verticalOffset: vpx(1)
       horizontalOffset: vpx(1)
-      color: '#55FFFFFF'
+      color: "#55FFFFFF"
       radius: vpx(2)
       samples: vpx(1)
     }
@@ -250,12 +260,12 @@ Item {
 
   Component.onCompleted: {
     setAvailableActions({
-      [actionKeys.bottom]: {
-        label: 'Select',
+      [Enums.ActionKeys.Bottom]: {
+        label: "Select",
         visible: true
       },
-      [actionKeys.left]: {
-        label: 'Game Details',
+      [Enums.ActionKeys.Left]: {
+        label: "Game Details",
         visible: true
       }
     });

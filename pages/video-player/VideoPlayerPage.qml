@@ -3,9 +3,10 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtMultimedia 5.15
+import "../../js/enums.mjs" as Enums
 
 Item {
-  property var videoPath: api.memory.get(memoryKeys.videoPath)
+  property var videoPath: api.memory.get(Enums.MemoryKeys.VideoPath)
   focus: true
   Keys.onPressed: {
     if (!event.isAutoRepeat && api.keys.isCancel(event)) {
@@ -14,7 +15,7 @@ Item {
   }
 
   Rectangle {
-    color: 'black'
+    color: "black"
     anchors.fill: parent
   }
 
@@ -27,8 +28,8 @@ Item {
 
   Component.onCompleted: () => {
     setAvailableActions({
-      [actionKeys.right]: {
-        label: 'Back',
+      [Enums.ActionKeys.Right]: {
+        label: "Back",
         visible: true
       }
     });

@@ -1,13 +1,13 @@
 import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
-import "../scripts/QmlObjectBuilder.mjs" as QmlObjectBuilder
-import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
+import "../js/qml-utils.mjs" as QmlUtils
+import "../js/styling.mjs" as Styling
 
 PathView {
   id: panelsList
   interactive: false
-  height: panelHeight + panelReflectionSize
+  height: panelHeight + vpx(Styling.panelReflectionSize)
   highlightMoveDuration: 400
   pathItemCount: model.count
   cacheItemCount: pathItemCount + 2
@@ -15,8 +15,8 @@ PathView {
 
   property var lastChild: children[children.length - 1]
   property int previousIndex: 0
-  property real panelWidth: vpx(XboxDashboardParameters.panelStyles[contentType].width)
-  property real panelHeight: vpx(XboxDashboardParameters.panelStyles[contentType].height)
+  property real panelWidth: vpx(Styling.panelStyles[contentType].width)
+  property real panelHeight: vpx(Styling.panelStyles[contentType].height)
   property var panelContent
   property var indexPersistenceKey
   property var contentType
@@ -72,7 +72,7 @@ PathView {
 
   function generatePath() {
     const startingItemX = panelWidth / 2;
-    const panelStyle = XboxDashboardParameters.panelStyles[contentType];
+    const panelStyle = Styling.panelStyles[contentType];
     const getScale = panelStyle.getScale;
     const getXOffset = screenIndex => vpx(panelStyle.getXOffset(screenIndex), false);
     const getYOffset = screenIndex => vpx(panelStyle.getYOffset(screenIndex), false);
@@ -88,16 +88,16 @@ PathView {
     }
 
     const itemsCount = panelsList.pathItemCount
-    const path = new QmlObjectBuilder.Path({ startX: 0, startY: 0 }, root);
+    const path = new QmlUtils.Path({ startX: 0, startY: 0 }, root);
     const buildPathSegment = (parameters, previousParameters = parameters) => {
       const { x, scale, yOffset, screenIndex } = parameters;
       const segment = [
-        new QmlObjectBuilder.PathAttribute({ name: 'itemScale', value: scale }, root),
-        new QmlObjectBuilder.PathAttribute({ name: 'itemOffsetY', value: yOffset }, root),
-        new QmlObjectBuilder.PathAttribute({ name: 'previousItemScale', value: previousParameters.scale }, root),
-        new QmlObjectBuilder.PathAttribute({ name: 'itemX', value: x }, root),
-        new QmlObjectBuilder.PathAttribute({ name: 'previousItemX', value: previousParameters.x }, root),
-        new QmlObjectBuilder.PathAttribute({ name: 'screenIndex', value: screenIndex }, root)
+        new QmlUtils.PathAttribute({ name: "itemScale", value: scale }, root),
+        new QmlUtils.PathAttribute({ name: "itemOffsetY", value: yOffset }, root),
+        new QmlUtils.PathAttribute({ name: "previousItemScale", value: previousParameters.scale }, root),
+        new QmlUtils.PathAttribute({ name: "itemX", value: x }, root),
+        new QmlUtils.PathAttribute({ name: "previousItemX", value: previousParameters.x }, root),
+        new QmlUtils.PathAttribute({ name: "screenIndex", value: screenIndex }, root)
       ];
 
       return segment;
@@ -126,9 +126,9 @@ PathView {
 
           return [
             ...acc,
-            new QmlObjectBuilder.PathLine({ x: currentSegmentParameters.x, y: currentSegmentParameters.y }, root),
+            new QmlUtils.PathLine({ x: currentSegmentParameters.x, y: currentSegmentParameters.y }, root),
             ...buildPathSegment(currentSegmentParameters, previousSegmentParameters),
-            new QmlObjectBuilder.PathPercent({ value: currentSegmentParameters.percent }, root),
+            new QmlUtils.PathPercent({ value: currentSegmentParameters.percent }, root),
           ]
         },
         buildPathSegment({ x: 0, scale: 1, yOffset: 0, screenIndex: 0 }),

@@ -11,7 +11,7 @@ export function PathLine({ x, y }, root) {
 }
 
 export function PathAttribute({ name, value }, root) {
-  return createQtQuickObject(`PathAttribute { name: '${name}'; value: ${value} }`, root);
+  return createQtQuickObject(`PathAttribute { name: "${name}"; value: ${value} }`, root);
 }
 
 export function PathPercent({ value }, root) {

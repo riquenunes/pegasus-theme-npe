@@ -3,12 +3,13 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
-import "../scripts/XboxDashboardParameters.mjs" as XboxDashboardParameters
+import "../../js/enums.mjs" as Enums
 
-import '../components'
+import "../../components"
+import "./components"
 
 Item {
-  property var currentGame: api.memory.get(memoryKeys.currentGame)
+  property var currentGame: api.memory.get(Enums.MemoryKeys.CurrentGame)
   property var screenshotPath: currentGame.assets.background
       || currentGame.assets.banner
       || currentGame.assets.screenshot
@@ -70,7 +71,7 @@ Item {
       StyledText {
         Layout.fillWidth: true
         id: imagesHeader
-        text: 'Images'
+        text: "Images"
         font.weight: Font.Black
       }
 
@@ -93,8 +94,8 @@ Item {
       onActiveFocusChanged: {
         if (activeFocus) {
           setAvailableActions({
-            [actionKeys.right]: {
-              label: 'Back',
+            [Enums.ActionKeys.Right]: {
+              label: "Back",
               visible: true
             }
           });
@@ -103,7 +104,7 @@ Item {
 
       StyledText {
         Layout.fillWidth: true
-        text: 'Details'
+        text: "Details"
         font.weight: Font.Black
       }
 
@@ -126,7 +127,7 @@ Item {
         Layout.fillWidth: true
 
         id: aboutHeader
-        text: 'Description'
+        text: "Description"
         font.weight: Font.Black
       }
 
@@ -142,7 +143,7 @@ Item {
           anchors.fill: parent
           text: currentGame.description || currentGame.summary
           textFormat: Text.StyledText
-          color: '#80FFFFFF'
+          color: "#80FFFFFF"
           layer.enabled: false
         }
       }
@@ -151,22 +152,22 @@ Item {
 
   PanelsList {
     id: panelsList
-    contentType: XboxDashboardParameters.PanelContentTypes.Content
+    contentType: Enums.PanelContentTypes.Content
     model: ListModel {
       ListElement {
-        type: 'quick-actions'
+        type: "quick-actions"
         component: () => quickActionsPanel
       }
       ListElement {
-        type: 'images'
+        type: "images"
         component: () => imagesPanel
       }
       ListElement {
-        type: 'details'
+        type: "details"
         component: () => detailsPanel
       }
       ListElement {
-        type: 'description'
+        type: "description"
         component: () => descriptionPanel
       }
     }
@@ -174,7 +175,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.leftMargin: vpx(67)
-    indexPersistenceKey: memoryKeys.gameDetailsPanelIndex
+    indexPersistenceKey: Enums.MemoryKeys.GameDetailsPanelIndex
     delegate: PanelWrapper {
       Rectangle {
         width: parent.width
@@ -185,9 +186,9 @@ Item {
           start: Qt.point(0, 0)
           end: Qt.point(parent.width, parent.height)
           gradient: Gradient {
-            GradientStop { position: 0; color: '#50616e' }
-            GradientStop { position: .6; color: '#283743' }
-            GradientStop { position: 1; color: '#29333d' }
+            GradientStop { position: 0; color: "#50616e" }
+            GradientStop { position: .6; color: "#283743" }
+            GradientStop { position: 1; color: "#29333d" }
           }
         }
 
@@ -204,8 +205,8 @@ Item {
 
         Component.onCompleted: () => {
           setAvailableActions({
-            [actionKeys.right]: {
-              label: 'Back',
+            [Enums.ActionKeys.Right]: {
+              label: "Back",
               visible: true
             }
           });
@@ -219,7 +220,7 @@ Item {
   Keys.onPressed: {
     if (!event.isAutoRepeat) {
       if (api.keys.isCancel(event)) {
-        api.memory.set(memoryKeys.gameDetailsPanelIndex, 0);
+        api.memory.set(Enums.MemoryKeys.GameDetailsPanelIndex, 0);
         navigate(pages.library);
       } else if (api.keys.isNextPage(event)) {
         panelsList.navigateForwardQuickly();

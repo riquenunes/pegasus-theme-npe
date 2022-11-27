@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
+import "../js/enums.mjs" as Enums
 
 ListView {
   id: listView
@@ -11,24 +12,24 @@ ListView {
   onCurrentItemChanged: {
     if (currentIndex !== previousIndex) focusSound.play();
 
-    setAvailableActions(Object.assign(availableActions, {
-      [actionKeys.bottom]: {
-        label: 'Select',
+    appendAdditionalAvailableActions({
+      [Enums.ActionKeys.Bottom]: {
+        label: "Select",
         visible: model.get(currentIndex).canExecute()
       }
-    }));
+    });
 
     previousIndex = currentIndex;
   }
 
   onActiveFocusChanged: {
     if (activeFocus) {
-      setAvailableActions(Object.assign(availableActions, {
-        [actionKeys.bottom]: {
-          label: 'Select',
+      appendAdditionalAvailableActions({
+        [Enums.ActionKeys.Bottom]: {
+          label: "Select",
           visible: model.get(currentIndex).canExecute()
         }
-      }));
+      });
     }
   }
 
@@ -41,8 +42,8 @@ ListView {
     Rectangle {
       visible: !listView.activeFocus
       anchors.fill: parent
-      color: 'Transparent'
-      border.color: '#FFF'
+      color: "Transparent"
+      border.color: "#FFF"
       border.width: vpx(2)
       opacity: .2
       radius: bg.radius
@@ -52,9 +53,9 @@ ListView {
       id: bg
       visible: listView.activeFocus
       gradient: Gradient {
-        GradientStop { position: 0; color: '#bdd3a1' }
-        GradientStop { position: .5; color: '#5d9809' }
-        GradientStop { position: 1; color: '#6d9a17' }
+        GradientStop { position: 0; color: "#bdd3a1" }
+        GradientStop { position: .5; color: "#5d9809" }
+        GradientStop { position: 1; color: "#6d9a17" }
       }
       radius: vpx(5)
       anchors.fill: parent
@@ -66,8 +67,8 @@ ListView {
         anchors.verticalCenter: parent.bottom
         height: parent.height
         gradient: Gradient {
-          GradientStop { position: 0.0; color: '#66ffffff' }
-          GradientStop { position: 0.5; color: 'transparent' }
+          GradientStop { position: 0.0; color: "#66ffffff" }
+          GradientStop { position: 0.5; color: "transparent" }
         }
       }
 
@@ -77,7 +78,7 @@ ListView {
         verticalOffset: 0
         radius: 8.0
         samples: 17
-        color: '#80000000'
+        color: "#80000000"
       }
     }
 
@@ -86,7 +87,7 @@ ListView {
       anchors.fill: parent
       radius: bg.radius
       visible: bg.visible && bg.opacity === 1
-      color: 'transparent'
+      color: "transparent"
       clip: true
 
       LinearGradient {
@@ -111,15 +112,15 @@ ListView {
         gradient: Gradient {
           GradientStop {
             position: 0
-            color: 'transparent'
+            color: "transparent"
           }
           GradientStop {
             position: .5
-            color: 'white'
+            color: "white"
           }
           GradientStop {
             position: 1
-            color: 'transparent'
+            color: "transparent"
           }
         }
       }
@@ -136,12 +137,12 @@ ListView {
       anchors.left: parent.left
       anchors.leftMargin: vpx(6)
       opacity: canExecute() && parent.ListView.isCurrentItem ? 1 : .4
-      color: canExecute() ? '#FFF' : '#000'
+      color: canExecute() ? "#FFF" : "#000"
       layer.enabled: canExecute()
     }
 
     Rectangle {
-      color: '#FFF'
+      color: "#FFF"
       opacity: .07
       height: vpx(1)
       width: parent.width

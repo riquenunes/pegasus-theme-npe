@@ -21,7 +21,7 @@ Item {
       model: 6
 
       Image {
-        source: '../assets/images/misc/star-filled.png'
+        source: "../assets/images/misc/star-filled.png"
         width: vpx(24)
         height: vpx(24)
       }
@@ -36,7 +36,7 @@ Item {
       model: 6
 
       Image {
-        source: '../assets/images/misc/star-empty.png'
+        source: "../assets/images/misc/star-empty.png"
         width: vpx(24)
         height: vpx(24)
       }

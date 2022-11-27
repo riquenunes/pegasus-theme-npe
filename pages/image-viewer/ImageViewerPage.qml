@@ -3,11 +3,12 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtMultimedia 5.15
+import "../../js/enums.mjs" as Enums
 
-import '../components'
+import "../../components"
 
 Item {
-  property var imagePaths: api.memory.get(memoryKeys.imagePaths)
+  property var imagePaths: api.memory.get(Enums.MemoryKeys.ImagePaths)
   property alias running: viewer.running
 
   focus: true
@@ -48,7 +49,7 @@ Item {
     }
 
     Rectangle {
-      color: '#000'
+      color: "#000"
       opacity: .8
       width: pageText.width + vpx(128)
       height: pageText.height + vpx(32)
@@ -69,12 +70,12 @@ Item {
 
   Component.onCompleted: () => {
     setAvailableActions({
-      [actionKeys.bottom]: {
-        label: running ? 'Pause' : 'Resume',
+      [Enums.ActionKeys.Bottom]: {
+        label: running ? "Pause" : "Resume",
         visible: true,
       },
-      [actionKeys.right]: {
-        label: 'Back',
+      [Enums.ActionKeys.Right]: {
+        label: "Back",
         visible: true
       }
     });
@@ -82,12 +83,12 @@ Item {
 
   onRunningChanged: {
     setAvailableActions({
-      [actionKeys.bottom]: {
-        label: running ? 'Pause' : 'Resume',
+      [Enums.ActionKeys.Bottom]: {
+        label: running ? "Pause" : "Resume",
         visible: true,
       },
-      [actionKeys.right]: {
-        label: 'Back',
+      [Enums.ActionKeys.Right]: {
+        label: "Back",
         visible: true
       }
     });

@@ -4,6 +4,8 @@ import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
 
+import "../../../components"
+
 RowLayout {
   property var game
 
@@ -32,7 +34,7 @@ RowLayout {
       Layout.fillWidth: true
 
       StyledText {
-        text: 'Platform'
+        text: "Platform"
         font.weight: Font.Black
       }
 
@@ -41,7 +43,7 @@ RowLayout {
 
         text: game.collections.get(0).name
         font.weight: Font.Black
-        color: '#80FFFFFF'
+        color: "#80FFFFFF"
         layer.enabled: false
         wrapMode: Text.Wrap
       }
@@ -51,7 +53,7 @@ RowLayout {
       Layout.fillWidth: true
 
       StyledText {
-        text: 'Developer'
+        text: "Developer"
         font.weight: Font.Black
       }
 
@@ -60,7 +62,7 @@ RowLayout {
 
         text: game.developer
         font.weight: Font.Black
-        color: '#80FFFFFF'
+        color: "#80FFFFFF"
         layer.enabled: false
         wrapMode: Text.Wrap
       }
@@ -70,7 +72,7 @@ RowLayout {
       Layout.fillWidth: true
 
       StyledText {
-        text: 'Publisher'
+        text: "Publisher"
         font.weight: Font.Black
         anchors.topMargin: vpx(25)
       }
@@ -80,7 +82,7 @@ RowLayout {
 
         text: game.publisher
         font.weight: Font.Black
-        color: '#80FFFFFF'
+        color: "#80FFFFFF"
         layer.enabled: false
         wrapMode: Text.Wrap
       }

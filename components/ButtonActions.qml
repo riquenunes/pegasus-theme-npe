@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
+import "../js/enums.mjs" as Enums
 
 Row {
   anchors.bottom: parent.bottom
@@ -24,35 +25,72 @@ Row {
     }
   }
 
+  function setAvailableActions(replacementActions) {
+    const newActions = Object.values(Enums.ActionKeys).reduce((newActions, key) => {
+      if (replacementActions[key]) {
+        newActions[key] = replacementActions[key];
+      } else {
+        newActions[key] = {
+          visible: false,
+          label: internal.availableActions[key]
+            ? internal.availableActions[key].label
+            : undefined
+        };
+      }
+
+      return newActions;
+    }, {})
+
+    internal.availableActions = newActions;
+  }
+
+  function appendAdditionalAvailableActions(newActions) {
+    setAvailableActions(Object.assign(internal.availableActions, newActions))
+  }
+
   ButtonPrompt {
     id: bottomButton
-    button: actionKeys.bottom
-    text: availableActions[actionKeys.bottom].label || ''
-    enabled: availableActions[actionKeys.bottom].visible
+    button: Enums.ActionKeys.Bottom
+    text: internal.availableActions[Enums.ActionKeys.Bottom].label || ""
+    enabled: internal.availableActions[Enums.ActionKeys.Bottom].visible
     sound: selectSound
   }
 
   ButtonPrompt {
     id: rightButton
-    button: actionKeys.right
-    text: availableActions[actionKeys.right].label || ''
-    enabled: availableActions[actionKeys.right].visible
+    button: Enums.ActionKeys.Right
+    text: internal.availableActions[Enums.ActionKeys.Right].label || ""
+    enabled: internal.availableActions[Enums.ActionKeys.Right].visible
     sound: backSound
   }
 
   ButtonPrompt {
     id: leftButton
-    button: actionKeys.left
-    text: availableActions[actionKeys.left].label || ''
-    enabled: availableActions[actionKeys.left].visible
+    button: Enums.ActionKeys.Left
+    text: internal.availableActions[Enums.ActionKeys.Left].label || ""
+    enabled: internal.availableActions[Enums.ActionKeys.Left].visible
     sound: selectSound
   }
 
   ButtonPrompt {
     id: topButton
-    button: actionKeys.top
-    text: availableActions[actionKeys.top].label || ''
-    enabled: availableActions[actionKeys.top].visible
+    button: Enums.ActionKeys.Top
+    text: internal.availableActions[Enums.ActionKeys.Top].label || ""
+    enabled: internal.availableActions[Enums.ActionKeys.Top].visible
     sound: selectSound
+  }
+
+  QtObject {
+    id: internal
+    property var availableActions
+  }
+
+  Component.onCompleted: {
+    internal.availableActions = {
+      [Enums.ActionKeys.Bottom]: { visible: true },
+      [Enums.ActionKeys.Right]: { visible: true },
+      [Enums.ActionKeys.Left]: { visible: true },
+      [Enums.ActionKeys.Top]: { visible: true }
+    };
   }
 }

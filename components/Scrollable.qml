@@ -3,6 +3,7 @@ import QtQuick.Window 2.0
 import QtGraphicalEffects 1.12
 import QtQml 2.15
 import QtQuick.Layouts 1.1
+import "../js/enums.mjs" as Enums
 
 Item {
   default property alias content: flickable.children
@@ -33,8 +34,8 @@ Item {
       onActiveFocusChanged: {
         if (activeFocus) {
           setAvailableActions({
-            [actionKeys.right]: {
-              label: 'Back',
+            [Enums.ActionKeys.Right]: {
+              label: "Back",
               visible: true
             }
           });
@@ -47,15 +48,15 @@ Item {
 
       Image {
         source: flickable.verticalVelocity < 0
-          ? '../assets/images/icons/up-focus.png'
-          : '../assets/images/icons/up-default.png'
+          ? "../assets/images/icons/up-focus.png"
+          : "../assets/images/icons/up-default.png"
         opacity: flickable.atYBeginning ? 0 : 1
       }
 
       Image {
         source: flickable.verticalVelocity > 0
-          ? '../assets/images/icons/down-focus.png'
-          : '../assets/images/icons/down-default.png'
+          ? "../assets/images/icons/down-focus.png"
+          : "../assets/images/icons/down-default.png"
         opacity: flickable.atYEnd ? 0 : 1
       }
     }

@@ -1,6 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
+import "../js/styling.mjs" as Styling
 
 FocusScope {
   id: panel
@@ -83,7 +84,7 @@ FocusScope {
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      height: panelReflectionSize
+      height: vpx(Styling.panelReflectionSize)
       radius: vpx(7)
 
       gradient: Gradient {
@@ -125,6 +126,6 @@ FocusScope {
     anchors.left: content.right
     height: parent.height
     width: height * 0.09
-    source: '../assets/images/misc/panel-shadow.png'
+    source: "../assets/images/misc/panel-shadow.png"
   }
 }

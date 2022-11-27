@@ -26,7 +26,7 @@ Item {
   }
 
   Rectangle {
-    color: 'black'
+    color: "black"
     anchors.fill: parent
     Image {
       id: player
