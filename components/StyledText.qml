@@ -8,12 +8,13 @@ Text {
   color: "#FFF"
   font.pixelSize: vpx(24)
   font.family: convectionui.name
+  font.letterSpacing: vpx(.4, false)
   layer.enabled: true
   layer.effect: DropShadow {
-    verticalOffset: 1
-    horizontalOffset: 1
+    verticalOffset: vpx(1, false)
+    horizontalOffset: vpx(1, false)
     color: "#80000000"
-    radius: 2
+    radius: vpx(2, false)
     samples: 1
   }
 }
