@@ -51,6 +51,8 @@ Item {
           ? "../assets/images/icons/up-focus.png"
           : "../assets/images/icons/up-default.png"
         opacity: flickable.atYBeginning ? 0 : 1
+        width: vpx(26)
+        height: vpx(22)
       }
 
       Image {
@@ -58,6 +60,8 @@ Item {
           ? "../assets/images/icons/down-focus.png"
           : "../assets/images/icons/down-default.png"
         opacity: flickable.atYEnd ? 0 : 1
+        width: vpx(26)
+        height: vpx(22)
       }
     }
   }

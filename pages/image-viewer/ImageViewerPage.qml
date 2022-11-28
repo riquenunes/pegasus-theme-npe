@@ -60,7 +60,7 @@ Item {
 
     StyledText {
       id: pageText
-      font.pointSize: vpx(16)
+      font.pixelSize: vpx(21)
       font.weight: Font.Black
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter

@@ -43,7 +43,7 @@ Item {
 
         id: gameTitle
         text: currentGame.title
-        font.pointSize: vpx(25)
+        font.pixelSize: vpx(34)
         wrapMode: Text.Wrap
       }
 

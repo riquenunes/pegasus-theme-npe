@@ -6,7 +6,7 @@ import QtQml 2.15
 Text {
   FontLoader { id: convectionui; source: "../assets/fonts/convectionui.ttf" }
   color: "#FFF"
-  font.pointSize: vpx(18)
+  font.pixelSize: vpx(24)
   font.family: convectionui.name
   layer.enabled: true
   layer.effect: DropShadow {

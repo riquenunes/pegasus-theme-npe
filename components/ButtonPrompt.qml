@@ -95,7 +95,7 @@ Item {
     anchors.verticalCenter: icon.verticalCenter
     anchors.leftMargin: vpx(4)
     text: parent.text
-    font.pointSize: vpx(14)
+    font.pixelSize: vpx(19)
     transform: Translate {
       y: vpx(1)
     }

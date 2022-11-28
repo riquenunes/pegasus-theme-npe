@@ -17,7 +17,7 @@ Item {
       opacity: PathView.itemOpacity
       z: index
       text: name
-      font.pointSize: vpx(30)
+      font.pixelSize: vpx(41)
       transform:[
         Translate {
           y: -sectionName.height * (1 - sectionName.PathView.itemOpacity)
@@ -209,7 +209,7 @@ Item {
         }
 
         StyledText {
-          font.pointSize: vpx(20)
+          font.pixelSize: vpx(27)
           text: title
           anchors.bottom: summaryText.top
           anchors.left: parent.left
@@ -222,7 +222,7 @@ Item {
 
         StyledText {
           id: summaryText
-          font.pointSize: vpx(16)
+          font.pixelSize: vpx(21)
           text: summary
           anchors.bottom: parent.bottom
           anchors.left: parent.left
@@ -247,7 +247,7 @@ Item {
     anchors.topMargin: vpx(9) - vpx(Styling.panelReflectionSize)
     anchors.left: parent.left
     anchors.leftMargin: vpx(96)
-    font.pointSize: vpx(15)
+    font.pixelSize: vpx(20)
     color: "#616161"
     layer.effect: DropShadow {
       verticalOffset: vpx(1)
