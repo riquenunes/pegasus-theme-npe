@@ -34,23 +34,19 @@ Item {
   property var currentGame: currentPlatform.games.get(gamesList.currentIndex)
 
   Keys.onUpPressed: {
-    if (!event.isAutoRepeat) {
-      platformsList.incrementCurrentIndex()
-    }
+    if (!event.isAutoRepeat) platformsList.incrementCurrentIndex()
   }
 
   Keys.onDownPressed: {
-    if (!event.isAutoRepeat) {
-      platformsList.decrementCurrentIndex()
-    }
+    if (!event.isAutoRepeat) platformsList.decrementCurrentIndex()
   }
 
   Keys.onLeftPressed: {
-    gamesList.previousItem()
+    if (!event.isAutoRepeat) gamesList.previousItem()
   }
 
   Keys.onRightPressed: {
-     gamesList.nextItem()
+    if (!event.isAutoRepeat) gamesList.nextItem()
   }
 
   Keys.onPressed: {
