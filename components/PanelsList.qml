@@ -6,7 +6,6 @@ import "../js/styling.mjs" as Styling
 
 PathView {
   id: panelsList
-  interactive: false
   height: panelHeight + vpx(Styling.panelReflectionSize)
   highlightMoveDuration: 400
   pathItemCount: model.count
@@ -22,26 +21,22 @@ PathView {
   property var contentType
 
   function nextItem() {
-    if (interactive && currentIndex < model.count - 1) incrementCurrentIndex();
+    if (currentIndex < model.count - 1) incrementCurrentIndex();
   }
 
   function previousItem() {
-    if (interactive && currentIndex > 0) decrementCurrentIndex();
+    if (currentIndex > 0) decrementCurrentIndex();
   }
 
   function navigateForwardQuickly() {
-    if (interactive) {
-      for(let i = 0; i < 5; i++) {
-        nextItem();
-      }
+    for(let i = 0; i < 5; i++) {
+      nextItem();
     }
   }
 
   function navigateBackwardsQuickly() {
-    if (interactive) {
-      for(let i = 0; i < 5; i++) {
-        previousItem();
-      }
+    for(let i = 0; i < 5; i++) {
+      previousItem();
     }
   }
 
@@ -63,10 +58,8 @@ PathView {
   }
 
   onPathChanged: {
-    interactive = false;
     delay(() => {
       currentIndex = api.memory.get(indexPersistenceKey);
-      interactive = true;
     }, 80 * (pathItemCount > 14 ? 14 : pathItemCount));
   }
 
