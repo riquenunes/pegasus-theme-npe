@@ -1,5 +1,5 @@
 # New Pegasus Experience Theme
-NPE is a theme for the  [Pegasus Frontend](https://pegasus-frontend.org/) that aims to recreate the classical Xbox 360 "NXE" Dashboard experience. A lot of time was spent getting things to look exactly as they did on the original hardware, I hope you enjoy it!
+NPE is a theme for the  [Pegasus Frontend](https://pegasus-frontend.org/) that aims to recreate the classic Xbox 360 "NXE" Dashboard experience. A lot of time was spent getting things to look exactly as they did on the original hardware, so I hope you enjoy it!
 
 ## Demo Video
 [![video](./images/video.jpg)](https://www.youtube.com/watch?v=2N1WveJdMdY)
