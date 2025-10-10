@@ -1,6 +1,7 @@
-# New Pegasus Experience Theme
+> [!WARNING]
+This project is no longer being updated, but you’re welcome to keep using or forking it! It’s been replaced by [https://gamestacker.io/](https://gamestacker.io/), which has all the same features and way more.
 
-[![patreon](./images/donate-patreon.png)](https://www.patreon.com/hncreations)
+# New Pegasus Experience Theme
 
 NPE is a theme for the [Pegasus Frontend](https://pegasus-frontend.org/) that aims to recreate the classic Xbox 360 "NXE" Dashboard experience. A lot of time was spent getting things to look exactly as they did on the original hardware, so I hope you enjoy it!
 
@@ -26,9 +27,3 @@ While the UI will try it's best to work without having every bit of information 
     - Background: `background` or `screenshot` or `titlescreen`
     - Image Viewer: `screenshot` or `titlescreen` or `banner`
     - Game cover: `poster` or `boxFront` or `logo`
-
-## Donate
-
-This project is a labor of love, crafted by a single dedicated person in their spare time. With your support, I can continue to work on recreating classic console interfaces that you remember fondly, as well as adding new and exciting features to this theme.
-
-[![patreon](./images/donate-patreon.png)](https://www.patreon.com/hncreations)
